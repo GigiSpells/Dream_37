@@ -6,11 +6,7 @@ Dream 37
 
 ## Description
 
-Dream 37 will be a single level in a sidescroller object finding mystery game. 
-Using a sprite character the user will be able to explore a small environment and interact with objects, 
-some of which will provide clues about why the character is there/ progress the level.
-This level will display my knowledge in python and pygame,
-and act as a small interactive experience that can be enjoyed outside the scope of this course.
+Dream 37 will be a single level in a sidescroller object-finding mystery game, where the user will be able to explore a small environment and interact with objects to solve a mystery/ progress the level. This level will display my knowledge in python and pygame, and act as a demo for a potential more complete game/ small interactive experience that can be enjoyed outside the scope of this course.
 
 ## Features
 - User can explore simple environment through Sprite avatar
@@ -31,7 +27,7 @@ and act as a small interactive experience that can be enjoyed outside the scope 
 
 ## Outcomes
 Ideal Outcome:
-- In an ideal scenario, a user would be able to open my game to a start screen
+- In an ideal scenario, a user would be able to open my game to a start screen.
 After starting the game the player could move across the screen to different parts of a room.
 The user would be able to click on several objects that respond to their input. 
 After finding a certain number of objects, the "level" would end. 
@@ -39,6 +35,7 @@ After finding a certain number of objects, the "level" would end.
 Minimal Viable Outcome:
 - Player character can move in environment.
 - At least one object can be interacted with.
+- Start, Active, and End game states
 
 ## Milestones
 
