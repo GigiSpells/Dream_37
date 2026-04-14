@@ -5,52 +5,55 @@ Dream 37
 [Dream 37 Repository](https://github.com/GigiSpells/Dream_37)
 
 ## Description
-1-2 sentence description of what it will do and how it relevant to media and digital arts.
 
-Dream 37 will be a single level in a sidescroller object finding game. 
+Dream 37 will be a single level in a sidescroller object finding mystery game. 
 Using a sprite character the user will be able to explore a small environment and interact with objects, 
-some of which will provide clues about why the character is there. 
+some of which will provide clues about why the character is there/ progress the level.
 This level will display my knowledge in python and pygame,
 and act as a small interactive experience that can be enjoyed outside the scope of this course.
 
 ## Features
 - User can explore simple environment through Sprite avatar
-  - I will display a simple environment 
-	- I will create a player class that defines an avatar that can be animated by user input.
-- User can interact with objects in environment & get clues
+  - I will display a simple environment on the display surface
+	- I will create a player character animated by user input.
+- User can interact with objects in environment & get clues/points
 	- I will define a series of objects that respond to user input
+  - I will define an "end" to the level after a certain number of objects are found
+
 - Feature N 
 	- Short explaination of how it will be executed.
 
 ## Challenges
 - I need to research how to use user input in pygame
-- I need to research and learn more about animation in pygame.
-- I need to find free assets for my game.
+- I need to research more about animation in pygame.
+- I need to research rectangles and collisions.
+- I need to find free visual assets for my game. (Code will take precedent over making my own assets)
 
 ## Outcomes
 Ideal Outcome:
-- In an ideal scenario, a user would be able to open my game and move across the screen to different parts of a room 
+- In an ideal scenario, a user would be able to open my game to a start screen
+After starting the game the player could move across the screen to different parts of a room.
 The user would be able to click on several objects that respond to their input. 
-After finding certain objects, the "level" would end.
+After finding a certain number of objects, the "level" would end. 
 
 Minimal Viable Outcome:
-- Player character can move left and right in environment.
-- At least one object can be interacted with
+- Player character can move in environment.
+- At least one object can be interacted with.
 
 ## Milestones
 
 - Week 1
-  1. Goal 1
-  2. Goal 2
+  1. Find visual Assets
+  2. Get items on screen & begin animation
 
 - Week 2
-  1. Goal 1
-  2. Goal 2
+  1. Add player movement
+  2. Add object interaction
 
   - Week 3
-  1. Goal 1
-  2. Goal 2
+  1. Game state management
+  2. Add points/progression system
 
 - Week 4 (Final)
-  1. Goal 1
-  2. Goal 2
+  1. Clean up code
+  2. Add my own assets if time allows
