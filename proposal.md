@@ -14,7 +14,7 @@ small interactive experience that can be enjoyed outside the scope of this cours
 ## Features
 - User can explore simple environment through Sprite avatar
   - I will display a simple environment & objects on the display surface
-	- I will create a player character animated by user input.
+  - I will create a player character animated by user input.
 - User can interact with objects in environment & get clues/points
 	- I will define a series of objects that respond to user input
   - I will define an "end" to the level after a certain number of objects are found
@@ -49,7 +49,7 @@ Minimal Viable Outcome:
   1. Add player movement
   2. Add object interaction
 
-  - Week 3
+- Week 3
   1. Game state management
   2. Add points/progression system
 
