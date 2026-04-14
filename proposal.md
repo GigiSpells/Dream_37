@@ -6,27 +6,25 @@ Dream 37
 
 ## Description
 
-Dream 37 will be a single level in a sidescroller object finding mystery game. 
-Using a sprite character the user will be able to explore a small environment and interact with objects, 
-some of which will provide clues about why the character is there/ progress the level.
-This level will display my knowledge in python and pygame,
-and act as a small interactive experience that can be enjoyed outside the scope of this course.
+Dream 37 will be a single level in a sidescroller object-finding mystery game, where the user will
+be able to explore a small environment and interact with objects to solve a mystery/ progress the level.
+This level will display my knowledge in python and pygame, and act as a demo for a potential more complete game/
+small interactive experience that can be enjoyed outside the scope of this course.
 
 ## Features
 - User can explore simple environment through Sprite avatar
-  - I will display a simple environment on the display surface
+  - I will display a simple environment & objects on the display surface
 	- I will create a player character animated by user input.
 - User can interact with objects in environment & get clues/points
 	- I will define a series of objects that respond to user input
   - I will define an "end" to the level after a certain number of objects are found
-
-- Feature N 
-	- Short explaination of how it will be executed.
+- Start / End Screens
+  - I will create alternative game states to active gameplay using game loops & if statements
 
 ## Challenges
-- I need to research how to use user input in pygame
-- I need to research more about animation in pygame.
-- I need to research rectangles and collisions.
+- I need to learn more about user input in pygame
+- I need to learn more about animation in pygame.
+- I need to research rectangles and collision simulation with pygame.
 - I need to find free visual assets for my game. (Code will take precedent over making my own assets)
 
 ## Outcomes
@@ -39,6 +37,7 @@ After finding a certain number of objects, the "level" would end.
 Minimal Viable Outcome:
 - Player character can move in environment.
 - At least one object can be interacted with.
+- Start, Active, and End game states
 
 ## Milestones
 
