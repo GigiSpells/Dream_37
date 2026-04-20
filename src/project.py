@@ -1,3 +1,20 @@
+import pygame
+
+def main():
+    pygame.init
+    pygame.display.set_caption("Dream 37")
+    resolution = (640, 360)
+    screen = pygame.display.set_mode(resolution)
+
+#Event Loop
+    running = True
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+        screen.fill('Black')
+    pygame.quit()
+
 # TODO:
 
 # Initalize Pygame
@@ -43,3 +60,6 @@
 # else:
     # If progress/points == 0: screen.blit(start screen) *shows when game opens
     # If progress/points >= 5: screen.blit(temp end screen)
+
+if __name__ == "__main__":
+    main()
