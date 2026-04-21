@@ -1,4 +1,5 @@
 import pygame
+import spritesheet
 
 def main():
     pygame.init
@@ -6,13 +7,30 @@ def main():
     resolution = (640, 360)
     screen = pygame.display.set_mode(resolution)
 
+    sprite_sheet_image = pygame.image.load('assets/CharacterSheets/Player/Right.png').convert_alpha()
+    sprite_sheet = spritesheet.SpriteSheet(sprite_sheet_image)
+
+    BG = (50, 50, 50)
+    BLACK = (0, 0, 0)
+
+    frame_0 = sprite_sheet.get_image(0, 24, 24, 3, BLACK)
+    frame_1 = sprite_sheet.get_image(1, 24, 24, 3, BLACK)
+
 #Event Loop
     running = True
     while running:
+
+        screen.fill(BG)
+
+        screen.blit(frame_0, (0,0))
+        screen.blit(frame_1, (100,0))
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-        screen.fill('Black')
+
+        pygame.display.flip()
+
     pygame.quit()
 
 # TODO:
