@@ -1,5 +1,26 @@
 import pygame
+import pytmx
 import spritesheet
+
+def get_image(sheet, frame, width, height, scale):
+    image = pygame.Surface((width, height)).convert_alpha()
+    image.blit(sheet, (0,0), ((frame*width),16, width, height))
+    image = pygame.transform.scale(image, (width*scale, height*scale))
+
+    return image
+
+
+def draw_map(surface):
+    tmx_data = pytmx.load_pygame('Dream_37_Map.tmx')
+    tile_width = tmx_data.tilewidth
+    tile_height = tmx_data.tileheight
+    for layer in tmx_data.visible_layers:
+        if isinstance(layer, pytmx.TiledTileLayer):
+            for x, y, gid in layer:
+                tile = tmx_data.get_tile_image_by_grid(gid)
+                if tile:
+                    surface.blit(tile, x * tile_width, y * tile_height)
+
 
 def main():
     pygame.init
@@ -7,14 +28,21 @@ def main():
     resolution = (640, 360)
     screen = pygame.display.set_mode(resolution)
 
+    #environment = tmx_date.get_tile_image()
+    
+
     sprite_sheet_image = pygame.image.load('assets/CharacterSheets/Player/Right.png').convert_alpha()
     sprite_sheet = spritesheet.SpriteSheet(sprite_sheet_image)
+
+    #environment_image = pygame.image.load('assets/Top-Down_Retro_Interior/TopDownHouse_FloorsAndWalls.png').convert_alpha()
+
+    #tile_0 = get_image(environment_image, 1, 16, 16, 5)
 
     BG = (50, 50, 50)
     BLACK = (0, 0, 0)
 
-    frame_0 = sprite_sheet.get_image(0, 24, 24, 3, BLACK)
-    frame_1 = sprite_sheet.get_image(1, 24, 24, 3, BLACK)
+    frame_0 = sprite_sheet.get_image(0, 24, 24, 1, BLACK)
+    frame_1 = sprite_sheet.get_image(1, 24, 24, 1, BLACK)
 
 #Event Loop
     running = True
@@ -22,30 +50,22 @@ def main():
 
         screen.fill(BG)
 
-        screen.blit(frame_0, (0,0))
-        screen.blit(frame_1, (100,0))
+        #screen.blit(frame_0, (0,0))
+        #screen.blit(frame_1, (100,0))
+        #screen.blit(tile_0, (0,0))
+        #screen.blit
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+
+        draw_map(screen)
 
         pygame.display.flip()
 
     pygame.quit()
 
 # TODO:
-
-# Initalize Pygame
-# Initalize Window Screen
-    # pygame.init()
-    # screen = pygame.display.set_mode((800,400))
-    # pygame.display.set_caption
-# Create Game Loop (for closing window)
-# while True:
-#     for event in pygame.event.get():
-#         if event.type == pygame.QUIT:
-#             pygame.quit()
-#             exit()
 
 # BLIT Environment Assets Onto Screen
     # Have Environment background larger than screen, 
