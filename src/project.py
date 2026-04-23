@@ -2,13 +2,6 @@ import pygame
 import pytmx
 import spritesheet
 
-def get_image(sheet, frame, width, height, scale):
-    image = pygame.Surface((width, height)).convert_alpha()
-    image.blit(sheet, (0,0), ((frame*width),16, width, height))
-    image = pygame.transform.scale(image, (width*scale, height*scale))
-
-    return image
-
 
 def draw_map(surface):
     tmx_data = pytmx.load_pygame('graphics/environment/Dream_37_Map.tmx')
