@@ -3,6 +3,10 @@ import pytmx
 import spritesheet
 
 
+# BLIT Environment Onto Screen
+    # Figure out how to resize tmx map (resize tiles individually?)
+    # Figure out if possible to implement collisons through Tiled
+    # If not, create custom rects for collision purposes
 def draw_map(surface):
     tmx_data = pytmx.load_pygame('graphics/environment/Dream_37_Map.tmx')
     tile_width = tmx_data.tilewidth
@@ -14,6 +18,37 @@ def draw_map(surface):
                 if tile:
                     surface.blit(tile, (x * tile_width, y * tile_height))
 
+# Create Character Sprite Class
+        # Animate Character by iterating through images in list?
+    # Allow Character movement through User Input
+        # A/<-- key decreases y value, D/--> key increases y value
+        #   def move_character(self):
+        #       keys = pygame.key.get_pressed()
+    # Simulate Collisions (Finish Ultimate Pygame Video)
+
+class Player(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+
+    # init
+        # Import Up, Down, Left, and Right Sprite sheet
+        # Define Idle frames 1 and 2, and walking frames 1-4 from each sheet
+        # Create Idle list, and a Walk List for each direction
+        # Set index to 0 (self.player_index)
+        # Define current player image surface (set default) self.image
+        # Define player rect (self.rect = self.image.get_rect(point_on_rect = x,y))
+
+    # user input
+        # find out key = pygame.key.get(pressed) vs event.type == pygame.KEYDOWN
+        # if event.key == pygame.K_UP or K_w / K_DOWN or K_s / K_LEFT or K_a / K_RIGHT or K_d
+        # self.rect.y -= 2 (try different speeds)
+
+    # player animation 
+        # Increase index each tick a movement key is pressed
+        # Or not pressed, for the idle animation
+        # When index > the len(list) reset to 0 to reset walk cycle
+        # self.image = self.player_walk_down[int(self.player_index)]
+        # Access different list based on the key being pressed to change sprite direction
 
 def main():
     pygame.init
@@ -50,19 +85,6 @@ def main():
     pygame.quit()
 
 # TODO:
-
-# BLIT Environment Assets Onto Screen
-    # Have Environment background larger than screen, 
-    # background moves when character reaches edge of screen?
-
-# Create Character Sprite Class
-    # Import Character Image/s
-        # Animate Character by iterating through images in list?
-    # Allow Character movement through User Input
-        # A/<-- key decreases y value, D/--> key increases y value
-        #   def move_character(self):
-        #       keys = pygame.key.get_pressed()
-    # Simulate Collisions (Finish Ultimate Pygame Video)
 
 # Create Object Sprite Class/Group
     # Import Object Image/s
