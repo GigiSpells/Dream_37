@@ -29,42 +29,42 @@ def draw_map(surface):
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-            # init
-        # Define Idle frames 1 and 2, and walking frames 1-4 from each sheet
-        # Create Idle list, and a Walk List for each direction
-        # Set index to 0 (self.player_index)
-        # Define current player image surface (set default) self.image
-        # Define player rect (self.rect = self.image.get_rect(point_on_rect = x,y))
+
+        self.action_list = [2, 4]
+        self.action = 0
+        self.frame = 0
+        self.frame_counter = 0
 
         player_up_sheet = pygame.image.load('graphics/player/up.png').convert_alpha()
         player_up = spritesheet.SpriteSheet(player_up_sheet)
 
-        up_idle_1 = player_up.get_image(1, 24, 24, 1, (0,0,0))
-        up_idle_2 = player_up.get_image(2, 24, 24, 1, (0,0,0))
-
+        self.up_frames = []
+        
         player_down_sheet = pygame.image.load('graphics/player/down.png').convert_alpha()
         player_down = spritesheet.SpriteSheet(player_down_sheet)
 
-        down_idle_1 = player_down.get_image(1, 24, 24, 1, (0,0,0))
-        down_idle_2 = player_down.get_image(2, 24, 24, 1, (0,0,0))
+        self.down_frames = []
 
-        down_walk_1 = player_down.get_image(3, 24, 24, 1, (0,0,0))
-        down_walk_2 = player_down.get_image(4, 24, 24, 1, (0,0,0))
-        down_walk_3 = player_down.get_image(5, 24, 24, 1, (0,0,0))
-        down_walk_4 = player_down.get_image(6, 24, 24, 1, (0,0,0))
-
-        down_walk = []
+        for i in self.action_list:
+            temp_img_list = []
+            for _ in range(i):
+                temp_img_list.append(player_down.get_image(self.frame_counter, 24, 24, 3, (0,0,0)))
+                self.frame_counter += 1
+            self.down_frames.append(temp_img_list)
 
         player_left_sheet = pygame.image.load('graphics/player/left.png').convert_alpha()
         player_left = spritesheet.SpriteSheet(player_left_sheet)
 
-
+        self.left_frames = []
 
         player_right_sheet = pygame.image.load('graphics/player/right.png').convert_alpha()
         player_right = spritesheet.SpriteSheet(player_right_sheet)
 
-        self.idle_index = 2
-        self.walk_index = 4
+        self.right_frames = []
+
+        self.image = self.down_frames[self.action][self.frame]
+        #self.image = player_down.get_image(1, 24, 24, 3, (0,0,0))
+        self.rect = self.image.get_rect(midbottom = (100,100))
 
     # user input
         # find out key = pygame.key.get(pressed) vs event.type == pygame.KEYDOWN
@@ -73,6 +73,7 @@ class Player(pygame.sprite.Sprite):
     # def receive_input(self):
 
     # player animation 
+        
         # Increase index each tick a movement key is pressed
         # Or not pressed, for the idle animation
         # When index > the len(list) reset to 0 to reset walk cycle
@@ -81,6 +82,7 @@ class Player(pygame.sprite.Sprite):
     # def animate_player(self):
 
     # def update(self):
+        
 
 
 def main():
@@ -140,7 +142,8 @@ def main():
 
         #Render & Display
 
-
+        player.draw(screen)
+        player.update()
 
         pygame.display.flip()
         dt = clock.tick(40)
