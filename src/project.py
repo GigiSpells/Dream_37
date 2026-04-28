@@ -70,10 +70,18 @@ class Player(pygame.sprite.Sprite):
         # find out key = pygame.key.get(pressed) vs event.type == pygame.KEYDOWN
         # if event.key == pygame.K_UP or K_w / K_DOWN or K_s / K_LEFT or K_a / K_RIGHT or K_d
         # self.rect.y -= 2 (try different speeds)
-    # def receive_input(self):
+    def move_character(self):
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_UP]:
+            self.rect.bottom -= 5
+        elif keys[pygame.K_DOWN]:
+            self.rect.bottom += 5
+        elif keys[pygame.K_LEFT]:
+            self.rect.x -= 5
+        elif keys[pygame.K_RIGHT]:
+            self.rect.x += 5                      
 
     # player animation 
-        
         # Increase index each tick a movement key is pressed
         # Or not pressed, for the idle animation
         # When index > the len(list) reset to 0 to reset walk cycle
@@ -81,7 +89,9 @@ class Player(pygame.sprite.Sprite):
         # Access different list based on the key being pressed to change sprite direction
     # def animate_player(self):
 
-    # def update(self):
+
+    def update(self):
+        self.move_character()
         
 
 
@@ -139,14 +149,13 @@ def main():
                 running = False
 
         #Game Logic
-
+        player.update()
         #Render & Display
 
         player.draw(screen)
-        player.update()
 
         pygame.display.flip()
-        dt = clock.tick(40)
+        dt = clock.tick(12)
 
     pygame.quit()
 
