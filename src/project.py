@@ -30,8 +30,44 @@ class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
 
+        player_up_sheet = pygame.image.load('graphics/player/up.png').convert_alpha()
+        player_up = spritesheet.SpriteSheet(player_up_sheet)
+
+        up_idle_1 = player_up.get_image(1, 24, 24, 1, (0,0,0))
+        up_idle_2 = player_up.get_image(2, 24, 24, 1, (0,0,0))
+
+        player_down_sheet = pygame.image.load('graphics/player/down.png').convert_alpha()
+        player_down = spritesheet.SpriteSheet(player_down_sheet)
+
+        down_idle_1 = player_down.get_image(1, 24, 24, 1, (0,0,0))
+        down_idle_2 = player_down.get_image(2, 24, 24, 1, (0,0,0))
+
+        down_walk_1 = player_down.get_image(3, 24, 24, 1, (0,0,0))
+        down_walk_2 = player_down.get_image(4, 24, 24, 1, (0,0,0))
+        down_walk_3 = player_down.get_image(5, 24, 24, 1, (0,0,0))
+        down_walk_4 = player_down.get_image(6, 24, 24, 1, (0,0,0))
+
+        down_walk = []
+
+        player_left_sheet = pygame.image.load('graphics/player/left.png').convert_alpha()
+        player_left = spritesheet.SpriteSheet(player_left_sheet)
+
+
+
+        player_right_sheet = pygame.image.load('graphics/player/right.png').convert_alpha()
+        player_right = spritesheet.SpriteSheet(player_right_sheet)
+
+        self.idle_index = 2
+        self.walk_index = 4
+    # def receive_input(self):
+
+    # def animate_player(self):
+
+    # def update(self):
+
+
+
     # init
-        # Import Up, Down, Left, and Right Sprite sheet
         # Define Idle frames 1 and 2, and walking frames 1-4 from each sheet
         # Create Idle list, and a Walk List for each direction
         # Set index to 0 (self.player_index)
@@ -55,14 +91,29 @@ def main():
     pygame.display.set_caption("Dream 37")
     resolution = (640, 360)
     screen = pygame.display.set_mode(resolution)
+    clock = pygame.time.Clock()
+    dt = 0
     
-    #sprite_sheet_image = pygame.image.load('assets/CharacterSheets/Player/Right.png').convert_alpha()
-    #sprite_sheet = spritesheet.SpriteSheet(sprite_sheet_image)
+
+    player_down_sheet = pygame.image.load('graphics/player/down.png').convert_alpha()
+    player_down = spritesheet.SpriteSheet(player_down_sheet)
 
     BG = (50, 50, 50)
 
-    #frame_0 = sprite_sheet.get_image(0, 24, 24, 1, BLACK)
-    #frame_1 = sprite_sheet.get_image(1, 24, 24, 1, BLACK)
+    walk_list = []
+    walk_index = [2, 4]
+    action = 0
+    last_update = pygame.time.get_ticks()
+    cooldown = 200
+    frame = 0
+    step_counter = 0
+
+    for i in walk_index:
+        temp_img_list = []
+        for _ in range(i):
+            temp_img_list.append(player_down.get_image(step_counter, 24, 24, 3, (0,0,0)))
+            step_counter += 1
+        walk_list.append(temp_img_list)
 
 #Event Loop
     running = True
@@ -70,17 +121,30 @@ def main():
 
         screen.fill(BG)
 
-        #screen.blit(frame_0, (0,0))
-        #screen.blit(frame_1, (100,0))
-        #screen.blit(tile_0, (0,0))
+        current_time = pygame.time.get_ticks()
+        if current_time - last_update >= cooldown:
+            frame += 1
+            last_update = current_time
+            if frame >= len(walk_list[action]):
+                frame = 0
 
+        
+        draw_map(screen)
+        screen.blit(walk_list[action][frame], (0,0))
+
+        #Event Loop
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
 
-        draw_map(screen)
+        #Game Logic
+
+        #Render & Display
+
+
 
         pygame.display.flip()
+        dt = clock.tick(40)
 
     pygame.quit()
 
