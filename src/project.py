@@ -29,6 +29,12 @@ def draw_map(surface):
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
+            # init
+        # Define Idle frames 1 and 2, and walking frames 1-4 from each sheet
+        # Create Idle list, and a Walk List for each direction
+        # Set index to 0 (self.player_index)
+        # Define current player image surface (set default) self.image
+        # Define player rect (self.rect = self.image.get_rect(point_on_rect = x,y))
 
         player_up_sheet = pygame.image.load('graphics/player/up.png').convert_alpha()
         player_up = spritesheet.SpriteSheet(player_up_sheet)
@@ -59,25 +65,12 @@ class Player(pygame.sprite.Sprite):
 
         self.idle_index = 2
         self.walk_index = 4
-    # def receive_input(self):
-
-    # def animate_player(self):
-
-    # def update(self):
-
-
-
-    # init
-        # Define Idle frames 1 and 2, and walking frames 1-4 from each sheet
-        # Create Idle list, and a Walk List for each direction
-        # Set index to 0 (self.player_index)
-        # Define current player image surface (set default) self.image
-        # Define player rect (self.rect = self.image.get_rect(point_on_rect = x,y))
 
     # user input
         # find out key = pygame.key.get(pressed) vs event.type == pygame.KEYDOWN
         # if event.key == pygame.K_UP or K_w / K_DOWN or K_s / K_LEFT or K_a / K_RIGHT or K_d
         # self.rect.y -= 2 (try different speeds)
+    # def receive_input(self):
 
     # player animation 
         # Increase index each tick a movement key is pressed
@@ -85,6 +78,10 @@ class Player(pygame.sprite.Sprite):
         # When index > the len(list) reset to 0 to reset walk cycle
         # self.image = self.player_walk_down[int(self.player_index)]
         # Access different list based on the key being pressed to change sprite direction
+    # def animate_player(self):
+
+    # def update(self):
+
 
 def main():
     pygame.init
@@ -94,6 +91,8 @@ def main():
     clock = pygame.time.Clock()
     dt = 0
     
+    player = pygame.sprite.GroupSingle()
+    player.add(Player())
 
     player_down_sheet = pygame.image.load('graphics/player/down.png').convert_alpha()
     player_down = spritesheet.SpriteSheet(player_down_sheet)
