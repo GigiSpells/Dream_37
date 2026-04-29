@@ -19,11 +19,7 @@ def draw_map(surface):
                     surface.blit(tile, (x * tile_width, y * tile_height))
 
 # Create Character Sprite Class
-        # Animate Character by iterating through images in list?
-    # Allow Character movement through User Input
-        # A/<-- key decreases y value, D/--> key increases y value
-        #   def move_character(self):
-        #       keys = pygame.key.get_pressed()
+    # Animate Character by iterating through images in list?
     # Simulate Collisions (Finish Ultimate Pygame Video)
 
 class Player(pygame.sprite.Sprite):
@@ -63,23 +59,19 @@ class Player(pygame.sprite.Sprite):
         self.right_frames = []
 
         self.image = self.down_frames[self.action][self.frame]
-        #self.image = player_down.get_image(1, 24, 24, 3, (0,0,0))
         self.rect = self.image.get_rect(midbottom = (100,100))
 
-    # user input
-        # find out key = pygame.key.get(pressed) vs event.type == pygame.KEYDOWN
-        # if event.key == pygame.K_UP or K_w / K_DOWN or K_s / K_LEFT or K_a / K_RIGHT or K_d
-        # self.rect.y -= 2 (try different speeds)
-    def move_character(self):
+
+    def move_player(self):
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_UP]:
-            self.rect.bottom -= 5
-        elif keys[pygame.K_DOWN]:
-            self.rect.bottom += 5
-        elif keys[pygame.K_LEFT]:
+        if keys[pygame.K_UP] or keys[pygame.K_w]:
+            self.rect.y -= 5
+        elif keys[pygame.K_DOWN] or keys[pygame.K_s]:
+            self.rect.y += 5
+        elif keys[pygame.K_LEFT] or keys[pygame.K_a]:
             self.rect.x -= 5
-        elif keys[pygame.K_RIGHT]:
-            self.rect.x += 5                      
+        elif keys[pygame.K_RIGHT] or keys[pygame.K_d]:
+            self.rect.x += 5       
 
     # player animation 
         # Increase index each tick a movement key is pressed
@@ -87,11 +79,12 @@ class Player(pygame.sprite.Sprite):
         # When index > the len(list) reset to 0 to reset walk cycle
         # self.image = self.player_walk_down[int(self.player_index)]
         # Access different list based on the key being pressed to change sprite direction
-    # def animate_player(self):
+    #def animate_player(self):
 
 
     def update(self):
-        self.move_character()
+        self.move_player()
+        self.animate_player()
         
 
 
