@@ -27,7 +27,7 @@ class Player(pygame.sprite.Sprite):
         super().__init__()
 
         self.action_list = [2, 4]
-        self.action = 0
+        self.action = 1
         self.frame = 0
         self.frame_counter = 0
 
@@ -35,30 +35,51 @@ class Player(pygame.sprite.Sprite):
         player_up = spritesheet.SpriteSheet(player_up_sheet)
 
         self.up_frames = []
+
+        # for i in self.action_list:
+        #     temp_up_list = []
+        #     for _ in range(i):
+        #         temp_up_list.append(player_up.get_image(self.frame_counter, 24, 24, 3, (0,0,0)))
+        #         self.frame_counter += 1
+        #     self.up_frames.append(temp_up_list)
         
         player_down_sheet = pygame.image.load('graphics/player/down.png').convert_alpha()
         player_down = spritesheet.SpriteSheet(player_down_sheet)
 
         self.down_frames = []
 
-        for i in self.action_list:
-            temp_img_list = []
-            for _ in range(i):
-                temp_img_list.append(player_down.get_image(self.frame_counter, 24, 24, 3, (0,0,0)))
-                self.frame_counter += 1
-            self.down_frames.append(temp_img_list)
+        # for i in self.action_list:
+        #     temp_down_list = []
+        #     for _ in range(i):
+        #         temp_down_list.append(player_down.get_image(self.frame_counter, 24, 24, 3, (0,0,0)))
+        #         self.frame_counter += 1
+        #     self.down_frames.append(temp_down_list)
 
         player_left_sheet = pygame.image.load('graphics/player/left.png').convert_alpha()
         player_left = spritesheet.SpriteSheet(player_left_sheet)
-
+        
         self.left_frames = []
+
+        for i in self.action_list:
+            temp_left_list = []
+            for _ in range(i):
+                temp_left_list.append(player_left.get_image(self.frame_counter, 24, 24, 3, (0,0,0)))
+                self.frame_counter += 1
+            self.left_frames.append(temp_left_list)
 
         player_right_sheet = pygame.image.load('graphics/player/right.png').convert_alpha()
         player_right = spritesheet.SpriteSheet(player_right_sheet)
 
         self.right_frames = []
 
-        self.image = self.down_frames[self.action][self.frame]
+        for i in self.action_list:
+            temp_right_list = []
+            for _ in range(i):
+                temp_right_list.append(player_right.get_image(self.frame_counter, 24, 24, 3, (0,0,0)))
+                self.frame_counter += 1
+            self.right_frames.append(temp_right_list)
+
+        self.image = self.left_frames[self.action][self.frame]
         self.rect = self.image.get_rect(midbottom = (100,100))
 
 
@@ -71,7 +92,9 @@ class Player(pygame.sprite.Sprite):
         elif keys[pygame.K_LEFT] or keys[pygame.K_a]:
             self.rect.x -= 5
         elif keys[pygame.K_RIGHT] or keys[pygame.K_d]:
-            self.rect.x += 5       
+            self.rect.x += 5
+        else:
+            return False       
 
     # player animation 
         # Increase index each tick a movement key is pressed
@@ -79,8 +102,30 @@ class Player(pygame.sprite.Sprite):
         # When index > the len(list) reset to 0 to reset walk cycle
         # self.image = self.player_walk_down[int(self.player_index)]
         # Access different list based on the key being pressed to change sprite direction
-    #def animate_player(self):
-
+    def animate_player(self):
+        keys = pygame.key.get_pressed()
+        if self.move_player() == False:
+            self.action = 0
+        else:
+            self.action = 1
+            if keys[pygame.K_UP] or keys[pygame.K_w]:
+                print("up")
+                self.image = self.up_frames[self.action][self.frame]
+            elif keys[pygame.K_DOWN] or keys[pygame.K_s]:
+                print("down")
+                self.image = self.down_frames[self.action][self.frame]
+            elif keys[pygame.K_LEFT] or keys[pygame.K_a]:
+                print("left")
+                self.image = self.left_frames[self.action][self.frame]
+                print(self.image)
+                print(self.rect)
+            elif keys[pygame.K_RIGHT] or keys[pygame.K_d]:
+                print("right")
+                self.image = self.right_frames[self.action][self.frame]
+                print(self.image)
+                print(self.rect)
+                #iterate through list based on key pressed
+                # iterate through idle animation
 
     def update(self):
         self.move_player()
