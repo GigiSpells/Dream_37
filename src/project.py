@@ -7,21 +7,16 @@ import spritesheet
     # Figure out how to resize tmx map (resize tiles individually?)
     # Figure out if possible to implement collisons through Tiled
     # If not, create custom rects for collision purposes
-def draw_map(surface):
-    tmx_data = pytmx.load_pygame('graphics/environment/Dream_37_Map.tmx')
-    tile_width = tmx_data.tilewidth
-    tile_height = tmx_data.tileheight
-    for layer in tmx_data.visible_layers:
-        if isinstance(layer, pytmx.TiledTileLayer):
-            for x, y, gid in layer:
-                tile = tmx_data.get_tile_image_by_gid(gid)
-                if tile:
-                    surface.blit(tile, (x * tile_width, y * tile_height))
+def load_map(file, group):
+    for layer in file.visible_layers:
+        if hasattr(layer,'data'):
+            for x, y, surf, in layer.tiles():
+                pos = (x * 16, y * 16)
+                Tile(pos = pos, surf = surf, groups= group)
+
 
 # Create Character Sprite Class
     # Animate Character by iterating through images in list?
-    # Simulate Collisions (Finish Ultimate Pygame Video)
-
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
@@ -147,58 +142,63 @@ def main():
     clock = pygame.time.Clock()
     dt = 0
 
-    #alternative map loading test
-    tmx_data = pytmx.load_pygame('graphics/environment/Dream_37_Map.tmx')
-    
+    map_data = pytmx.load_pygame('graphics/environment/Dream_37_Map.tmx')
+    tile_sprite_group = pygame.sprite.Group()
+    load_map(map_data, tile_sprite_group)
+
     player = pygame.sprite.GroupSingle()
     player.add(Player())
 
-    player_down_sheet = pygame.image.load('graphics/player/down.png').convert_alpha()
-    player_down = spritesheet.SpriteSheet(player_down_sheet)
+    # player_down_sheet = pygame.image.load('graphics/player/down.png').convert_alpha()
+    # player_down = spritesheet.SpriteSheet(player_down_sheet)
 
     BG = (50, 50, 50)
 
-    walk_list = []
-    walk_index = [2, 4]
-    action = 0
-    last_update = pygame.time.get_ticks()
-    cooldown = 200
-    frame = 0
-    step_counter = 0
+    # walk_list = []
+    # walk_index = [2, 4]
+    # action = 0
+    # last_update = pygame.time.get_ticks()
+    # cooldown = 200
+    # frame = 0
+    # step_counter = 0
 
-    for i in walk_index:
-        temp_img_list = []
-        for _ in range(i):
-            temp_img_list.append(player_down.get_image(step_counter, 24, 24, 3, (0,0,0)))
-            step_counter += 1
-        walk_list.append(temp_img_list)
+    # for i in walk_index:
+    #     temp_img_list = []
+    #     for _ in range(i):
+    #         temp_img_list.append(player_down.get_image(step_counter, 24, 24, 3, (0,0,0)))
+    #         step_counter += 1
+    #     walk_list.append(temp_img_list)
 
 #Event Loop
     running = True
     while running:
-
-        screen.fill(BG)
-
-        current_time = pygame.time.get_ticks()
-        if current_time - last_update >= cooldown:
-            frame += 1
-            last_update = current_time
-            if frame >= len(walk_list[action]):
-                frame = 0
-
-        draw_map(screen)
-        screen.blit(walk_list[action][frame], (0,0))
 
         #Event Loop
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
 
+        screen.fill(BG)
+
+
+        # current_time = pygame.time.get_ticks()
+        # if current_time - last_update >= cooldown:
+        #     frame += 1
+        #     last_update = current_time
+        #     if frame >= len(walk_list[action]):
+        #         frame = 0
+
+
         #Game Logic
         player.update()
-        #Render & Display
 
+        #Render & Display
+        tile_sprite_group.draw(screen)
         player.draw(screen)
+
+        #draw_map(screen)
+        # screen.blit(walk_list[action][frame], (0,0))
+        
 
         pygame.display.flip()
         dt = clock.tick(12)
@@ -211,7 +211,7 @@ def main():
     # Import Object Image/s
     # Simulate Player-Object Collisions/Use User Input for object interaction
         # Check for user interaction each tick
-    # Potentially animate objects when they're found?
+    # Animate objects when they're found?
 
 # Develop Points System/ Way for Game to End
     # Create Progress bar sprite? with new frame for each point of progress?
