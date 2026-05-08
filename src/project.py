@@ -3,10 +3,8 @@ import pytmx
 import spritesheet
 
 
-# BLIT Environment Onto Screen
-    # Figure out how to resize tmx map (resize tiles individually?)
-    # Figure out if possible to implement collisons through Tiled
-    # If not, create custom rects for collision purposes
+
+    # Create custom rects for collision purposes
 def load_map(file, group):
     for layer in file.visible_layers:
         if hasattr(layer,'data'):
@@ -14,6 +12,11 @@ def load_map(file, group):
                 pos = (x * 16, y * 16)
                 Tile(pos = pos, surf = surf, groups= group)
 
+class Tile(pygame.sprite.Sprite):
+    def __init__(self,pos,surf,groups):
+        super().__init__(groups)
+        self.image = surf
+        self.rect = self.image.get_rect(topleft = pos)   
 
 # Create Character Sprite Class
     # Animate Character by iterating through images in list?
@@ -128,12 +131,8 @@ class Player(pygame.sprite.Sprite):
     def update(self):
         self.move_player()
         # self.animate_player()
+        print(self.rect)
         
-class Tile(pygame.sprite.Sprite):
-    def __init__(self,pos,surf,groups):
-        super().__init__(groups)
-        self.image = surf
-        self.rect = self.image.get_rect(topleft = pos)
 
 
 
@@ -147,9 +146,9 @@ def main():
 
     map_image = pygame.image.load('graphics/environment/Dream_37_Map_State1.png')
     map_rect = map_image.get_rect(center = (resolution[0]//2, resolution[1]//2))
-    map_data = pytmx.load_pygame('graphics/environment/Dream_37_Map.tmx')
-    tile_sprite_group = pygame.sprite.Group()
-    load_map(map_data, tile_sprite_group)
+    # map_data = pytmx.load_pygame('graphics/environment/Dream_37_Map.tmx')
+    # tile_sprite_group = pygame.sprite.Group()
+    # load_map(map_data, tile_sprite_group)
 
     player = pygame.sprite.GroupSingle()
     player.add(Player())
@@ -201,6 +200,7 @@ def main():
         #tile_sprite_group.draw(screen)
         screen.blit(map_image, map_rect)
         player.draw(screen)
+        
 
         #draw_map(screen)
         # screen.blit(walk_list[action][frame], (0,0))
