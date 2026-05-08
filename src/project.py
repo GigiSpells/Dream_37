@@ -26,6 +26,9 @@ class Player(pygame.sprite.Sprite):
         self.frame = 0
         self.frame_counter = 0
 
+        self.spawn_point = (985, 920)
+        self.speed = 10
+
         player_up_sheet = pygame.image.load('graphics/player/up.png').convert_alpha()
         player_up = spritesheet.SpriteSheet(player_up_sheet)
 
@@ -46,7 +49,7 @@ class Player(pygame.sprite.Sprite):
         for i in self.action_list:
             temp_down_list = []
             for _ in range(i):
-                temp_down_list.append(player_down.get_image(self.frame_counter, 24, 24, 3, (0,0,0)))
+                temp_down_list.append(player_down.get_image(self.frame_counter, 24, 24, 5, (0,0,0)))
                 self.frame_counter += 1
             self.down_frames.append(temp_down_list)
 
@@ -75,19 +78,19 @@ class Player(pygame.sprite.Sprite):
         #     self.right_frames.append(temp_right_list)
 
         self.image = self.down_frames[self.action][self.frame]
-        self.rect = self.image.get_rect(midbottom = (100,100))
+        self.rect = self.image.get_rect(midbottom = self.spawn_point)
 
 
     def move_player(self):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_UP] or keys[pygame.K_w]:
-            self.rect.y -= 5
+            self.rect.y -= self.speed
         elif keys[pygame.K_DOWN] or keys[pygame.K_s]:
-            self.rect.y += 5
+            self.rect.y += self.speed
         elif keys[pygame.K_LEFT] or keys[pygame.K_a]:
-            self.rect.x -= 5
+            self.rect.x -= self.speed
         elif keys[pygame.K_RIGHT] or keys[pygame.K_d]:
-            self.rect.x += 5
+            self.rect.x += self.speed
         else:
             return False       
 
@@ -137,11 +140,13 @@ class Tile(pygame.sprite.Sprite):
 def main():
     pygame.init
     pygame.display.set_caption("Dream 37")
-    resolution = (640, 360)
+    resolution = (1920, 1080)
     screen = pygame.display.set_mode(resolution)
     clock = pygame.time.Clock()
     dt = 0
 
+    map_image = pygame.image.load('graphics/environment/Dream_37_Map_State1.png')
+    map_rect = map_image.get_rect(center = (resolution[0]//2, resolution[1]//2))
     map_data = pytmx.load_pygame('graphics/environment/Dream_37_Map.tmx')
     tile_sprite_group = pygame.sprite.Group()
     load_map(map_data, tile_sprite_group)
@@ -193,7 +198,8 @@ def main():
         player.update()
 
         #Render & Display
-        tile_sprite_group.draw(screen)
+        #tile_sprite_group.draw(screen)
+        screen.blit(map_image, map_rect)
         player.draw(screen)
 
         #draw_map(screen)
