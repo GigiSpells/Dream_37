@@ -80,6 +80,7 @@ class Player(pygame.sprite.Sprite):
         #     self.right_frames.append(temp_right_list)
 
         self.image = self.down_frames[self.action][self.frame]
+        #self.rect = pygame.rect()
         self.rect = self.image.get_rect(midbottom = self.spawn_point)
 
 
@@ -140,7 +141,7 @@ class Player(pygame.sprite.Sprite):
     #Caclulate the position of the colission for each side
     # bottom - top = ~ 0 -> top collision, y cannot increase
 
-# Create Furniture Sprite Class
+# Create Furniture Sprite Class?
 # Add instances of Furniture to Group
     # Each instance will have start and end image stored in list
 # Check if player is colliding with an instance of furniture
@@ -153,14 +154,19 @@ class Wall(pygame.sprite.Sprite):
 
         self.pos = pos
         self.size = (width, height)
+        self.image = pygame.Surface(self.size)
+        self.image.fill((255, 0, 0))
+        self.rect = self.image.get_rect(topleft = self.pos)
 
-    def update(self):
-        self.surf = pygame.Surface(self.size)
-        self.surf.fill((255, 0, 0))
+    #def update(self):
+        #collision things
 
     def draw(self, surface):
         surface.blit(self.surf, self.pos)
 
+def is_colliding(player, group):
+    if pygame.sprite.spritecollide(player, group, False):
+        print('collision')
 
 def main():
     pygame.init
@@ -178,7 +184,8 @@ def main():
 
     player = pygame.sprite.GroupSingle()
     player.add(Player())
-    wall_1 = Wall((1177,587),333,389)
+    wall = pygame.sprite.Group()
+    wall.add(Wall((1177,587),333,389))
 
     # player_down_sheet = pygame.image.load('graphics/player/down.png').convert_alpha()
     # player_down = spritesheet.SpriteSheet(player_down_sheet)
@@ -225,7 +232,7 @@ def main():
         # ...
         screen.fill(BG)
         player.update()
-        wall_1.update()
+        is_colliding(player.sprite, wall)
 
         # Render the graphics here.
         # ...
@@ -233,7 +240,7 @@ def main():
         #tile_sprite_group.draw(screen)
         screen.blit(map_image, map_rect)
         player.draw(screen)
-        wall_1.draw(screen)
+        wall.draw(screen)
         
 
         #draw_map(screen)
