@@ -4,7 +4,7 @@ import spritesheet
 
 
 
-    # Create custom rects for collision purposes
+    
 def load_map(file, group):
     for layer in file.visible_layers:
         if hasattr(layer,'data'):
@@ -18,8 +18,7 @@ class Tile(pygame.sprite.Sprite):
         self.image = surf
         self.rect = self.image.get_rect(topleft = pos)   
 
-# Create Character Sprite Class
-    # Animate Character by iterating through images in list?
+# TODO: Animate player character
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
@@ -30,7 +29,7 @@ class Player(pygame.sprite.Sprite):
         self.frame_counter = 0
 
         self.spawn_point = (985, 920)
-        self.speed = 10
+        self.speed = 1
 
         player_up_sheet = pygame.image.load('graphics/player/up.png').convert_alpha()
         player_up = spritesheet.SpriteSheet(player_up_sheet)
@@ -103,7 +102,7 @@ class Player(pygame.sprite.Sprite):
         # When index > the len(list) reset to 0 to reset walk cycle
         # self.image = self.player_walk_down[int(self.player_index)]
         # Access different list based on the key being pressed to change sprite direction
-    # def animate_player(self):
+    #def animate_player(self):
     #     keys = pygame.key.get_pressed()
     #     if self.move_player() == False:
     #         self.action = 0
@@ -131,16 +130,43 @@ class Player(pygame.sprite.Sprite):
     def update(self):
         self.move_player()
         # self.animate_player()
-        print(self.rect)
+        # print(self.rect)
         
 
+# Collsions:
+    #Use Rect1.colliderect(Rect2)
+    #First check for any collision
+    # If any collision, check for which side is collding to limit movement in single direction
+    #Caclulate the position of the colission for each side
+    # bottom - top = ~ 0 -> top collision, y cannot increase
+
+# Create Furniture Sprite Class
+# Add instances of Furniture to Group
+    # Each instance will have start and end image stored in list
+# Check if player is colliding with an instance of furniture
+# If yes, check for which. If player clicks or presses enter while colliding, initiate interaction
+
+# Create Wall Sprite Class
+class Wall(pygame.sprite.Sprite):
+    def __init__(self, pos, width, height):
+        super().__init__()
+
+        self.pos = pos
+        self.size = (width, height)
+
+    def update(self):
+        self.surf = pygame.Surface(self.size)
+        self.surf.fill((255, 0, 0))
+
+    def draw(self, surface):
+        surface.blit(self.surf, self.pos)
 
 
 def main():
     pygame.init
     pygame.display.set_caption("Dream 37")
     resolution = (1920, 1080)
-    screen = pygame.display.set_mode(resolution)
+    screen = pygame.display.set_mode(resolution, pygame.RESIZABLE)
     clock = pygame.time.Clock()
     dt = 0
 
@@ -152,6 +178,7 @@ def main():
 
     player = pygame.sprite.GroupSingle()
     player.add(Player())
+    wall_1 = Wall((1177,587),333,389)
 
     # player_down_sheet = pygame.image.load('graphics/player/down.png').convert_alpha()
     # player_down = spritesheet.SpriteSheet(player_down_sheet)
@@ -177,12 +204,13 @@ def main():
     running = True
     while running:
 
-        #Event Loop
+        # Process player inputs.
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-
-        screen.fill(BG)
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_pos = pygame.mouse.get_pos()
+                print(mouse_pos)
 
 
         # current_time = pygame.time.get_ticks()
@@ -193,13 +221,19 @@ def main():
         #         frame = 0
 
 
-        #Game Logic
+        # Do logical updates here.
+        # ...
+        screen.fill(BG)
         player.update()
+        wall_1.update()
 
-        #Render & Display
+        # Render the graphics here.
+        # ...
+
         #tile_sprite_group.draw(screen)
         screen.blit(map_image, map_rect)
         player.draw(screen)
+        wall_1.draw(screen)
         
 
         #draw_map(screen)
@@ -207,7 +241,7 @@ def main():
         
 
         pygame.display.flip()
-        dt = clock.tick(12)
+        dt = clock.tick(60)
 
     pygame.quit()
 
