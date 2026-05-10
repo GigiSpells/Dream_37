@@ -1,7 +1,7 @@
 import pygame
 import pytmx
 import spritesheet
-
+import sys
 
 
     
@@ -24,7 +24,7 @@ class Player(pygame.sprite.Sprite):
         super().__init__()
 
         self.action_list = [2, 4]
-        self.action = 0
+        self.action = 1
         self.frame = 0
         self.frame_counter = 0
 
@@ -51,7 +51,7 @@ class Player(pygame.sprite.Sprite):
         for i in self.action_list:
             temp_down_list = []
             for _ in range(i):
-                temp_down_list.append(player_down.get_image(self.frame_counter, 24, 24, 5, (0,0,0)))
+                temp_down_list.append(player_down.get_image(self.frame_counter, 24, 24, 10, 17, 5, (0,0,0)))
                 self.frame_counter += 1
             self.down_frames.append(temp_down_list)
 
@@ -128,8 +128,14 @@ class Player(pygame.sprite.Sprite):
                 #iterate through list based on key pressed
                 # iterate through idle animation
 
-    def update(self):
+    def update(self, group):
+        saved_x_pos = self.rect.x
+        saved_y_pos = self.rect.y
         self.move_player()
+        if is_colliding(self, group):
+            self.rect.y = saved_y_pos
+            self.rect.x = saved_x_pos
+            print(f"{self.rect.x},{self.rect.y},{saved_x_pos},{saved_y_pos}")
         # self.animate_player()
         # print(self.rect)
         
@@ -167,6 +173,9 @@ class Wall(pygame.sprite.Sprite):
 def is_colliding(player, group):
     if pygame.sprite.spritecollide(player, group, False):
         print('collision')
+        return True
+    return False
+    
 
 def main():
     pygame.init
@@ -231,8 +240,7 @@ def main():
         # Do logical updates here.
         # ...
         screen.fill(BG)
-        player.update()
-        is_colliding(player.sprite, wall)
+        player.update(wall)
 
         # Render the graphics here.
         # ...
