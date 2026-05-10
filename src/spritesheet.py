@@ -14,9 +14,10 @@ class SpriteSheet():
 
         return image
     
-    #furniture_object(tile_size, w_in_tiles, h_in_tiles, obj_w, obj_h)
+
+    #furniture_object(tile_size=16, col, row, w_in_tiles, h_in_tiles, obj_w, obj_h)
     #full_width = w_in_tiles * tile size
     #full_height = h_in_tiles * tile size
-    #top_edge
-    #
-    #pygame.Surface(furniture_sheet, (0, 0, sprite_width, sprite_height), (col*tile_size)
+    #pygame.Surface(furniture_sheet, (0, 0, sprite_width, sprite_height), (col*tile_size), (row*tile_size), obj_w, obj_h
+
+    #fridge = Furniture(2, 4, 78, 165)

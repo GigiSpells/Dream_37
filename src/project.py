@@ -4,19 +4,6 @@ import spritesheet
 import sys
 
 
-    
-def load_map(file, group):
-    for layer in file.visible_layers:
-        if hasattr(layer,'data'):
-            for x, y, surf, in layer.tiles():
-                pos = (x * 16, y * 16)
-                Tile(pos = pos, surf = surf, groups= group)
-
-class Tile(pygame.sprite.Sprite):
-    def __init__(self,pos,surf,groups):
-        super().__init__(groups)
-        self.image = surf
-        self.rect = self.image.get_rect(topleft = pos)   
 
 # TODO: Animate player character
 class Player(pygame.sprite.Sprite):
@@ -81,7 +68,8 @@ class Player(pygame.sprite.Sprite):
 
         self.image = self.down_frames[self.action][self.frame]
         #self.rect = pygame.rect()
-        self.rect = self.image.get_rect(midbottom = self.spawn_point)
+        self.rect = self.image.get_bounding_rect()
+        self.rect.midbottom = self.spawn_point
 
 
     def move_player(self):
@@ -135,23 +123,18 @@ class Player(pygame.sprite.Sprite):
         if is_colliding(self, group):
             self.rect.y = saved_y_pos
             self.rect.x = saved_x_pos
-            print(f"{self.rect.x},{self.rect.y},{saved_x_pos},{saved_y_pos}")
         # self.animate_player()
         # print(self.rect)
-        
-
-# Collsions:
-    #Use Rect1.colliderect(Rect2)
-    #First check for any collision
-    # If any collision, check for which side is collding to limit movement in single direction
-    #Caclulate the position of the colission for each side
-    # bottom - top = ~ 0 -> top collision, y cannot increase
 
 # Create Furniture Sprite Class?
 # Add instances of Furniture to Group
     # Each instance will have start and end image stored in list
 # Check if player is colliding with an instance of furniture
 # If yes, check for which. If player clicks or presses enter while colliding, initiate interaction
+class Furniture():
+    def __init__(self, pos, width, height):
+        super().__init__()
+
 
 # Create Wall Sprite Class
 class Wall(pygame.sprite.Sprite):
@@ -170,12 +153,23 @@ class Wall(pygame.sprite.Sprite):
     def draw(self, surface):
         surface.blit(self.surf, self.pos)
 
+
 def is_colliding(player, group):
     if pygame.sprite.spritecollide(player, group, False):
         print('collision')
         return True
     return False
-    
+
+
+def load_map(image, surf, surf_res,):
+    map_img = pygame.image.load(image)
+    map_rect = map_img.get_rect(center = (surf_res[0]//2, surf_res[1]//2))
+    surf.blit(map_img, map_rect)   
+
+
+def load_collisions():
+    print("loading collisions")
+
 
 def main():
     pygame.init
@@ -184,12 +178,7 @@ def main():
     screen = pygame.display.set_mode(resolution, pygame.RESIZABLE)
     clock = pygame.time.Clock()
     dt = 0
-
-    map_image = pygame.image.load('graphics/environment/Dream_37_Map_State1.png')
-    map_rect = map_image.get_rect(center = (resolution[0]//2, resolution[1]//2))
-    # map_data = pytmx.load_pygame('graphics/environment/Dream_37_Map.tmx')
-    # tile_sprite_group = pygame.sprite.Group()
-    # load_map(map_data, tile_sprite_group)
+    BG = (50, 50, 50)
 
     player = pygame.sprite.GroupSingle()
     player.add(Player())
@@ -198,8 +187,6 @@ def main():
 
     # player_down_sheet = pygame.image.load('graphics/player/down.png').convert_alpha()
     # player_down = spritesheet.SpriteSheet(player_down_sheet)
-
-    BG = (50, 50, 50)
 
     # walk_list = []
     # walk_index = [2, 4]
@@ -244,9 +231,7 @@ def main():
 
         # Render the graphics here.
         # ...
-
-        #tile_sprite_group.draw(screen)
-        screen.blit(map_image, map_rect)
+        load_map('graphics/environment/Dream_37_Map_State1.png', screen, resolution)
         player.draw(screen)
         wall.draw(screen)
         
