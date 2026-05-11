@@ -132,17 +132,12 @@ class Player(pygame.sprite.Sprite):
     def draw(self, surface):
         surface.blit(self.image, self.rect)
 
-# Create Furniture Sprite Class?
-# Add instances of Furniture to Group
-    # Each instance will have start and end image stored in list
+
 # Check if player is colliding with an instance of furniture
 # If yes, check for which. If player clicks or presses enter while colliding, initiate interaction
-
-# Create Object Sprite Class/Group
-    # Import Object Image/s
-    # Simulate Player-Object Collisions/Use User Input for object interaction
-        # Check for user interaction each tick
+    # Check for user interaction each tick
     # Animate objects when they're found?
+
 class Furniture(pygame.sprite.Sprite):
     def __init__(self, object, pos):
         super().__init__()
@@ -151,10 +146,9 @@ class Furniture(pygame.sprite.Sprite):
         spritesheet_2 = pygame.image.load('assets/Top-Down_Retro_Interior/TopDownHouse_FurnitureState2.png').convert_alpha()
 
         self.states = [spritesheet_1,spritesheet_2]
-        self.state_index = 1
+        self.state_index = 0
         self.current_state = self.states[self.state_index]
     
-
         self.objects = spritesheet.SpriteSheet(self.current_state)
         self.object_params = object
         self.pos = pos
@@ -163,7 +157,7 @@ class Furniture(pygame.sprite.Sprite):
         self.image = self.objects.get_object(*self.object_params)
         self.rect = self.image.get_bounding_rect(1)
         self.rect.topleft = self.pos
-        print(self.current_state)
+
 
 class Wall(pygame.sprite.Sprite):
     def __init__(self, pos, width, height):
@@ -189,8 +183,10 @@ def is_colliding(player, group):
 
 
 def is_interacting(player, group):
-    collisions = pygame.sprite.spritecollide(player, group, False)
-    print(collisions)
+    keys = pygame.key.get_pressed()
+    if is_colliding(player, group) and keys[pygame.K_RETURN]:
+        return True
+    return False
 
 
 def load_map(image, surf, surf_res,):
@@ -198,6 +194,7 @@ def load_map(image, surf, surf_res,):
     map_img.set_alpha(70)
     map_rect = map_img.get_rect(center = (surf_res[0]//2, surf_res[1]//2))
     surf.blit(map_img, map_rect)   
+
 
 def main():
     pygame.init
@@ -218,8 +215,8 @@ def main():
              Wall((746-200,40-50),342,245))
 
     #Furniture
-    all_furniture = pygame.sprite.Group()
-    all_furniture.add(Furniture(spritesheet.fridge, (1080-200,203-50)),
+    furniture = pygame.sprite.Group()
+    furniture.add(Furniture(spritesheet.fridge, (1080-200,203-50)),
                        Furniture(spritesheet.sink, (1176-200,250-50)), 
                        Furniture(spritesheet.counter, (1272-200,250-50)),
                        Furniture(spritesheet.stove, (1415-200,251-50)),
@@ -250,13 +247,12 @@ def main():
     #         step_counter += 1
     #     walk_list.append(temp_img_list)
     print(player.sprite)
-    print(all_furniture)
+    print(furniture)
 #Event Loop
     running = True
     while running:
 
         # Process player inputs.
-        keys = pygame.key.get_pressed()
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -283,12 +279,14 @@ def main():
         # ...
 
         player.sprite.update()
-        all_furniture.update()
-        if is_colliding(player.sprite, all_furniture) and keys[pygame.K_RETURN]:
-            is_interacting(player.sprite, all_furniture)
+        furniture.update()
+        if is_interacting(player.sprite, furniture):
+            print("interaction")
+
+
 
         player.sprite.check_collisions(wall)
-        player.sprite.check_collisions(all_furniture)
+        player.sprite.check_collisions(furniture)
 
 
         # Render the graphics here.
@@ -296,7 +294,7 @@ def main():
         screen.fill(BG)
         load_map('graphics/environment/Dream_37_Map_MinusKeys.png', screen, resolution)
         wall.draw(screen)
-        all_furniture.draw(screen)
+        furniture.draw(screen)
         player.draw(screen)
         
         # screen.blit(walk_list[action][frame], (0,0))
