@@ -14,10 +14,23 @@ class SpriteSheet():
 
         return image
     
+    def get_object(self, tile_size, col, row, w_in_tiles, h_in_tiles, obj_w, obj_h, scale):
+        full_width = w_in_tiles * tile_size
+        full_height = h_in_tiles * tile_size
+        image = pygame.Surface((full_width, full_height), pygame.SRCALPHA)
+        image.blit(self.sheet, (0, 0, obj_w, obj_h), ((col*tile_size), (row*tile_size), full_width, full_height))
+        image = pygame.transform.scale(image, (full_width*scale, full_height*scale))
 
-    #furniture_object(tile_size=16, col, row, w_in_tiles, h_in_tiles, obj_w, obj_h)
-    #full_width = w_in_tiles * tile size
-    #full_height = h_in_tiles * tile size
-    #pygame.Surface(furniture_sheet, (0, 0, sprite_width, sprite_height), (col*tile_size), (row*tile_size), obj_w, obj_h
+        return image
+    
+# class FurnitureSheet():
+#     def __init__(self, image):
+#         self.sheet = image
 
-    #fridge = Furniture(2, 4, 78, 165)
+#     def get_object(self, tile_size, col, row, w_in_tiles, h_in_tiles, obj_w, obj_h):
+#         full_width = w_in_tiles * tile_size
+#         full_height = h_in_tiles * tile_size
+#         image = pygame.Surface((full_width, full_height), pygame.SRCALPHA)
+#         image.blit(self.sheet, (0, 0, obj_w, obj_h), ((col*tile_size), (row*tile_size), full_width, full_height))
+
+#         return image

@@ -131,10 +131,25 @@ class Player(pygame.sprite.Sprite):
     # Each instance will have start and end image stored in list
 # Check if player is colliding with an instance of furniture
 # If yes, check for which. If player clicks or presses enter while colliding, initiate interaction
-class Furniture():
-    def __init__(self, pos, width, height):
+
+# Create Object Sprite Class/Group
+    # Import Object Image/s
+    # Simulate Player-Object Collisions/Use User Input for object interaction
+        # Check for user interaction each tick
+    # Animate objects when they're found?
+class Furniture(pygame.sprite.Sprite):
+    def __init__(self):
         super().__init__()
 
+        spritesheet_1 = pygame.image.load('assets/Top-Down_Retro_Interior/TopDownHouse_FurnitureState1.png').convert_alpha()
+        spritesheet_2 = pygame.image.load('assets/Top-Down_Retro_Interior/TopDownHouse_FurnitureState2.png').convert_alpha()
+        self.object_params = (16, 2, 12, 2, 4, 26, 55, 3)
+        self.object = spritesheet.SpriteSheet(spritesheet_1)
+
+    def update(self):
+        self.image = self.object.get_object(*self.object_params)
+        self.rect = self.image.get_bounding_rect()
+        self.rect.topleft = (1089,214)
 
 # Create Wall Sprite Class
 class Wall(pygame.sprite.Sprite):
@@ -146,9 +161,6 @@ class Wall(pygame.sprite.Sprite):
         self.image = pygame.Surface(self.size)
         self.image.fill((255, 0, 0))
         self.rect = self.image.get_rect(topleft = self.pos)
-
-    #def update(self):
-        #collision things
 
     def draw(self, surface):
         surface.blit(self.surf, self.pos)
@@ -171,6 +183,7 @@ def load_collisions():
     print("loading collisions")
 
 
+
 def main():
     pygame.init
     pygame.display.set_caption("Dream 37")
@@ -184,6 +197,9 @@ def main():
     player.add(Player())
     wall = pygame.sprite.Group()
     wall.add(Wall((1177,587),333,389))
+
+    furniture = pygame.sprite.Group()
+    furniture.add(Furniture())
 
     # player_down_sheet = pygame.image.load('graphics/player/down.png').convert_alpha()
     # player_down = spritesheet.SpriteSheet(player_down_sheet)
@@ -231,14 +247,15 @@ def main():
         # ...
         screen.fill(BG)
         player.update(wall)
+        furniture.update()
 
         # Render the graphics here.
         # ...
         load_map('graphics/environment/Dream_37_Map_State1.png', screen, resolution)
         player.draw(screen)
         wall.draw(screen)
+        furniture.draw(screen)
         
-
         #draw_map(screen)
         # screen.blit(walk_list[action][frame], (0,0))
         
@@ -249,12 +266,6 @@ def main():
     pygame.quit()
 
 # TODO:
-
-# Create Object Sprite Class/Group
-    # Import Object Image/s
-    # Simulate Player-Object Collisions/Use User Input for object interaction
-        # Check for user interaction each tick
-    # Animate objects when they're found?
 
 # Develop Points System/ Way for Game to End
     # Create Progress bar sprite? with new frame for each point of progress?
