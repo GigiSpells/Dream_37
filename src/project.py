@@ -16,7 +16,7 @@ class Player(pygame.sprite.Sprite):
         self.frame_counter = 0
 
         self.spawn_point = (985, 920)
-        self.speed = 1
+        self.speed = 5
 
         player_up_sheet = pygame.image.load('graphics/player/up.png').convert_alpha()
         player_up = spritesheet.SpriteSheet(player_up_sheet)
@@ -67,7 +67,7 @@ class Player(pygame.sprite.Sprite):
         #     self.right_frames.append(temp_right_list)
 
         self.image = self.down_frames[self.action][self.frame]
-        #self.rect = pygame.rect()
+        #self.rect = pygame.Rect(self.spawnpoint[0], self.spawnpoint[1], )
         self.rect = self.image.get_bounding_rect()
         self.rect.midbottom = self.spawn_point
 
@@ -116,15 +116,21 @@ class Player(pygame.sprite.Sprite):
                 #iterate through list based on key pressed
                 # iterate through idle animation
 
-    def update(self, group):
-        saved_x_pos = self.rect.x
-        saved_y_pos = self.rect.y
-        self.move_player()
+    def check_collisions(self, group):
         if is_colliding(self, group):
-            self.rect.y = saved_y_pos
-            self.rect.x = saved_x_pos
+            self.rect.y = self.saved_y_pos
+            self.rect.x = self.saved_x_pos
+
+    def update(self):
+        self.saved_x_pos = self.rect.x
+        self.saved_y_pos = self.rect.y
+        self.move_player()
+        print(self.rect)
         # self.animate_player()
         # print(self.rect)
+
+    def draw(self, surface):
+        surface.blit(self.image, self.rect)
 
 # Create Furniture Sprite Class?
 # Add instances of Furniture to Group
@@ -168,7 +174,7 @@ class Wall(pygame.sprite.Sprite):
 
 def is_colliding(player, group):
     if pygame.sprite.spritecollide(player, group, False):
-        print('collision')
+        #print('collision')
         return True
     return False
 
@@ -193,8 +199,8 @@ def main():
     dt = 0
     BG = (50, 50, 50)
 
-    player = pygame.sprite.GroupSingle()
-    player.add(Player())
+    
+    player = Player()
     wall = pygame.sprite.Group()
     wall.add(Wall((1177,587),333,389))
 
@@ -246,8 +252,10 @@ def main():
         # Do logical updates here.
         # ...
         screen.fill(BG)
-        player.update(wall)
+        player.update()
         furniture.update()
+        player.check_collisions(wall)
+        player.check_collisions(furniture)
 
         # Render the graphics here.
         # ...
