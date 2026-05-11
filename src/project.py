@@ -183,6 +183,7 @@ def is_colliding(player, group):
 
 def load_map(image, surf, surf_res,):
     map_img = pygame.image.load(image)
+    map_img.set_alpha(70)
     map_rect = map_img.get_rect(center = (surf_res[0]//2, surf_res[1]//2))
     surf.blit(map_img, map_rect)   
 
@@ -195,7 +196,7 @@ def main():
     screen = pygame.display.set_mode(resolution, pygame.RESIZABLE)
     clock = pygame.time.Clock()
     dt = 0
-    BG = (50, 50, 50)
+    BG = (70, 50, 50)
 
     player = Player()
 
@@ -208,7 +209,17 @@ def main():
     #Furniture
     furniture_list = pygame.sprite.Group()
     furniture_list.add(Furniture(spritesheet.fridge, (1080,203)),
-                       Furniture(spritesheet.sink, (0,0)))
+                       Furniture(spritesheet.sink, (1176,250)), 
+                       Furniture(spritesheet.counter, (1272,250)),
+                       Furniture(spritesheet.stove, (1415,251)),
+                       Furniture(spritesheet.utensils, (1175,202)),
+                       Furniture(spritesheet.cupboard, (1272,155)),
+                       Furniture(spritesheet.big_couch, (408,683)),
+                       Furniture(spritesheet.little_couch, (504, 634)),
+                       Furniture(spritesheet.lamp, (454,587)),
+                       Furniture(spritesheet.side_table, (408,827)),
+                       Furniture(spritesheet.fireplace, (600,635)),
+                       Furniture(spritesheet.record_player, (696,827)))
 
     # player_down_sheet = pygame.image.load('graphics/player/down.png').convert_alpha()
     # player_down = spritesheet.SpriteSheet(player_down_sheet)
