@@ -219,7 +219,7 @@ def main():
                        Furniture(spritesheet.lamp, (454,587)),
                        Furniture(spritesheet.side_table, (408,827)),
                        Furniture(spritesheet.fireplace, (600,635)),
-                       Furniture(spritesheet.record_player, (696,827)))
+                       Furniture(spritesheet.record_player, (648,827)))
 
     # player_down_sheet = pygame.image.load('graphics/player/down.png').convert_alpha()
     # player_down = spritesheet.SpriteSheet(player_down_sheet)
@@ -273,7 +273,7 @@ def main():
         # Render the graphics here.
         # ...
         screen.fill(BG)
-        load_map('graphics/environment/Dream_37_Map_State1.png', screen, resolution)
+        load_map('graphics/environment/Dream_37_Map_MinusKeys.png', screen, resolution)
         wall.draw(screen)
         furniture_list.draw(screen)
         player.draw(screen)
