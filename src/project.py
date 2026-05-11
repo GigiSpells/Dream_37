@@ -150,7 +150,12 @@ class Furniture(pygame.sprite.Sprite):
         spritesheet_1 = pygame.image.load('assets/Top-Down_Retro_Interior/TopDownHouse_FurnitureState1.png').convert_alpha()
         spritesheet_2 = pygame.image.load('assets/Top-Down_Retro_Interior/TopDownHouse_FurnitureState2.png').convert_alpha()
 
-        self.objects = spritesheet.SpriteSheet(spritesheet_1)
+        self.states = [spritesheet_1,spritesheet_2]
+        self.state_index = 1
+        self.current_state = self.states[self.state_index]
+    
+
+        self.objects = spritesheet.SpriteSheet(self.current_state)
         self.object_params = object
         self.pos = pos
 
@@ -158,6 +163,7 @@ class Furniture(pygame.sprite.Sprite):
         self.image = self.objects.get_object(*self.object_params)
         self.rect = self.image.get_bounding_rect(1)
         self.rect.topleft = self.pos
+        print(self.current_state)
 
 class Wall(pygame.sprite.Sprite):
     def __init__(self, pos, width, height):
@@ -182,7 +188,7 @@ def is_colliding(player, group):
     return False
 
 
-def check_interaction(player, group):
+def is_interacting(player, group):
     collisions = pygame.sprite.spritecollide(player, group, False)
     print(collisions)
 
@@ -212,15 +218,15 @@ def main():
              Wall((746-200,40-50),342,245))
 
     #Furniture
-    furniture_list = pygame.sprite.Group()
-    furniture_list.add(Furniture(spritesheet.fridge, (1080-200,203-50)),
+    all_furniture = pygame.sprite.Group()
+    all_furniture.add(Furniture(spritesheet.fridge, (1080-200,203-50)),
                        Furniture(spritesheet.sink, (1176-200,250-50)), 
                        Furniture(spritesheet.counter, (1272-200,250-50)),
                        Furniture(spritesheet.stove, (1415-200,251-50)),
                        Furniture(spritesheet.utensils, (1175-200,202-50)),
                        Furniture(spritesheet.cupboard, (1272-200,155-50)),
-                       Furniture(spritesheet.big_couch, (408-200,683-50)),
-                       Furniture(spritesheet.little_couch, (504-200, 634-50)),
+                       #Furniture(spritesheet.big_couch, (408-200,683-50)),
+                       #Furniture(spritesheet.little_couch, (504-200, 634-50)),
                        Furniture(spritesheet.lamp, (454-200,587-50)),
                        Furniture(spritesheet.side_table, (408-200,827-50)),
                        Furniture(spritesheet.fireplace, (600-200,635-50)),
@@ -244,7 +250,7 @@ def main():
     #         step_counter += 1
     #     walk_list.append(temp_img_list)
     print(player.sprite)
-    print(furniture_list)
+    print(all_furniture)
 #Event Loop
     running = True
     while running:
@@ -277,12 +283,12 @@ def main():
         # ...
 
         player.sprite.update()
-        furniture_list.update()
-        if is_colliding(player.sprite, furniture_list) and keys[pygame.K_RETURN]:
-            check_interaction(player.sprite, furniture_list)
+        all_furniture.update()
+        if is_colliding(player.sprite, all_furniture) and keys[pygame.K_RETURN]:
+            is_interacting(player.sprite, all_furniture)
 
         player.sprite.check_collisions(wall)
-        player.sprite.check_collisions(furniture_list)
+        player.sprite.check_collisions(all_furniture)
 
 
         # Render the graphics here.
@@ -290,7 +296,7 @@ def main():
         screen.fill(BG)
         load_map('graphics/environment/Dream_37_Map_MinusKeys.png', screen, resolution)
         wall.draw(screen)
-        furniture_list.draw(screen)
+        all_furniture.draw(screen)
         player.draw(screen)
         
         # screen.blit(walk_list[action][frame], (0,0))
