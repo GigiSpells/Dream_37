@@ -175,10 +175,16 @@ class Wall(pygame.sprite.Sprite):
 
 
 def is_colliding(player, group):
-    if pygame.sprite.spritecollide(player, group, False):
-        #print('collision')
+    collisions = pygame.sprite.spritecollide(player, group, False)
+    if collisions:
+        #print(collisions)
         return True
     return False
+
+
+def check_interaction(player, group):
+    print ("checking for interactions")
+    #collisions = pygame.sprite.spritecollide(player, group, False)
 
 
 def load_map(image, surf, surf_res,):
@@ -186,8 +192,6 @@ def load_map(image, surf, surf_res,):
     map_img.set_alpha(70)
     map_rect = map_img.get_rect(center = (surf_res[0]//2, surf_res[1]//2))
     surf.blit(map_img, map_rect)   
-
-
 
 def main():
     pygame.init
@@ -198,7 +202,8 @@ def main():
     dt = 0
     BG = (70, 50, 50)
 
-    player = Player()
+    player = pygame.sprite.GroupSingle()
+    player.add(Player())
 
     # Walls
     wall = pygame.sprite.Group()
@@ -238,21 +243,26 @@ def main():
     #         temp_img_list.append(player_down.get_image(step_counter, 24, 24, 3, (0,0,0)))
     #         step_counter += 1
     #     walk_list.append(temp_img_list)
-
+    print(player.sprite)
+    print(furniture_list)
 #Event Loop
     running = True
     while running:
 
         # Process player inputs.
+        keys = pygame.key.get_pressed()
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     running = False
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                mouse_pos = pygame.mouse.get_pos()
-                print(mouse_pos)
+
+                        #check_interaction(player, furniture_list)
+            # if event.type == pygame.MOUSEBUTTONDOWN:
+            #     mouse_pos = pygame.mouse.get_pos()
+            #     print(mouse_pos)
 
 
         # current_time = pygame.time.get_ticks()
@@ -265,10 +275,14 @@ def main():
 
         # Do logical updates here.
         # ...
-        player.update()
+
+        player.sprite.update()
         furniture_list.update()
-        player.check_collisions(wall)
-        player.check_collisions(furniture_list)
+        if is_colliding(player.sprite, furniture_list) and keys[pygame.K_RETURN]:
+            check_interaction(player.sprite, furniture_list)
+        player.sprite.check_collisions(wall)
+        player.sprite.check_collisions(furniture_list)
+
 
         # Render the graphics here.
         # ...
