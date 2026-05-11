@@ -66,10 +66,14 @@ class Player(pygame.sprite.Sprite):
         #         self.frame_counter += 1
         #     self.right_frames.append(temp_right_list)
 
+
         self.image = self.down_frames[self.action][self.frame]
-        #self.rect = pygame.Rect(self.spawnpoint[0], self.spawnpoint[1], )
+        #self.rect = pygame.Rect(960, 865, 50, 20)
         self.rect = self.image.get_bounding_rect()
         self.rect.midbottom = self.spawn_point
+
+
+
 
 
     def move_player(self):
@@ -125,7 +129,7 @@ class Player(pygame.sprite.Sprite):
         self.saved_x_pos = self.rect.x
         self.saved_y_pos = self.rect.y
         self.move_player()
-        print(self.rect)
+        print(self.image)
         # self.animate_player()
         # print(self.rect)
 
@@ -166,6 +170,7 @@ class Wall(pygame.sprite.Sprite):
         self.size = (width, height)
         self.image = pygame.Surface(self.size)
         self.image.fill((255, 0, 0))
+        self.image.set_alpha(0)
         self.rect = self.image.get_rect(topleft = self.pos)
 
     def draw(self, surface):
@@ -201,8 +206,12 @@ def main():
 
     
     player = Player()
+
+    # Walls
     wall = pygame.sprite.Group()
-    wall.add(Wall((1177,587),333,389))
+    wall.add(Wall((1510,98),51,536),Wall((1177,587),333,389),
+             Wall((396,925),780,54),Wall((690,256),51,428),
+             Wall((746,104),342,245))
 
     furniture = pygame.sprite.Group()
     furniture.add(Furniture())
