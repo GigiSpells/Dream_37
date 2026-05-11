@@ -73,9 +73,6 @@ class Player(pygame.sprite.Sprite):
         self.rect.midbottom = self.spawn_point
 
 
-
-
-
     def move_player(self):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_UP] or keys[pygame.K_w]:
@@ -129,7 +126,6 @@ class Player(pygame.sprite.Sprite):
         self.saved_x_pos = self.rect.x
         self.saved_y_pos = self.rect.y
         self.move_player()
-        print(self.image)
         # self.animate_player()
         # print(self.rect)
 
@@ -148,20 +144,21 @@ class Player(pygame.sprite.Sprite):
         # Check for user interaction each tick
     # Animate objects when they're found?
 class Furniture(pygame.sprite.Sprite):
-    def __init__(self):
+    def __init__(self, object, pos):
         super().__init__()
 
         spritesheet_1 = pygame.image.load('assets/Top-Down_Retro_Interior/TopDownHouse_FurnitureState1.png').convert_alpha()
         spritesheet_2 = pygame.image.load('assets/Top-Down_Retro_Interior/TopDownHouse_FurnitureState2.png').convert_alpha()
-        self.object_params = (16, 2, 12, 2, 4, 26, 55, 3)
-        self.object = spritesheet.SpriteSheet(spritesheet_1)
+
+        self.objects = spritesheet.SpriteSheet(spritesheet_1)
+        self.object_params = object
+        self.pos = pos
 
     def update(self):
-        self.image = self.object.get_object(*self.object_params)
-        self.rect = self.image.get_bounding_rect()
-        self.rect.topleft = (1089,214)
+        self.image = self.objects.get_object(*self.object_params)
+        self.rect = self.image.get_bounding_rect(1)
+        self.rect.topleft = self.pos
 
-# Create Wall Sprite Class
 class Wall(pygame.sprite.Sprite):
     def __init__(self, pos, width, height):
         super().__init__()
@@ -190,10 +187,6 @@ def load_map(image, surf, surf_res,):
     surf.blit(map_img, map_rect)   
 
 
-def load_collisions():
-    print("loading collisions")
-
-
 
 def main():
     pygame.init
@@ -204,17 +197,18 @@ def main():
     dt = 0
     BG = (50, 50, 50)
 
-    
     player = Player()
 
     # Walls
     wall = pygame.sprite.Group()
     wall.add(Wall((1510,98),51,536),Wall((1177,587),333,389),
              Wall((396,925),780,54),Wall((690,256),51,428),
-             Wall((746,104),342,245))
+             Wall((746,40),342,245))
 
-    furniture = pygame.sprite.Group()
-    furniture.add(Furniture())
+    #Furniture
+    furniture_list = pygame.sprite.Group()
+    furniture_list.add(Furniture(spritesheet.fridge, (1080,203)),
+                       Furniture(spritesheet.sink, (0,0)))
 
     # player_down_sheet = pygame.image.load('graphics/player/down.png').convert_alpha()
     # player_down = spritesheet.SpriteSheet(player_down_sheet)
@@ -260,20 +254,19 @@ def main():
 
         # Do logical updates here.
         # ...
-        screen.fill(BG)
         player.update()
-        furniture.update()
+        furniture_list.update()
         player.check_collisions(wall)
-        player.check_collisions(furniture)
+        player.check_collisions(furniture_list)
 
         # Render the graphics here.
         # ...
+        screen.fill(BG)
         load_map('graphics/environment/Dream_37_Map_State1.png', screen, resolution)
-        player.draw(screen)
         wall.draw(screen)
-        furniture.draw(screen)
+        furniture_list.draw(screen)
+        player.draw(screen)
         
-        #draw_map(screen)
         # screen.blit(walk_list[action][frame], (0,0))
         
 
