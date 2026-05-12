@@ -121,6 +121,9 @@ class Player(pygame.sprite.Sprite):
             self.rect.y = self.saved_y_pos
             self.rect.x = self.saved_x_pos
 
+    # def check_item_collisions(self, group):
+    #     if is_colliding(self, group):
+
     def update(self):
         self.saved_x_pos = self.rect.x
         self.saved_y_pos = self.rect.y
@@ -183,6 +186,52 @@ class Wall(pygame.sprite.Sprite):
         surface.blit(self.surf, self.pos)
 
 
+# class Interaction():
+#     def __init__(self, player, type):
+#         self.player = player
+#         self.interaction_type = type
+#         self.collisions = pygame.sprite.spritecollide(player, self.interaction_type, False)
+#         self.sprite_list = pygame.sprite.Group.sprites(type)
+    
+#     def is_interacting(self):
+#         keys = pygame.key.get_pressed()
+#         if is_colliding(self.player, self.interaction_type) and keys[pygame.K_RETURN]:
+#             return True
+#         return False
+
+#     def furniture_interaction(self):
+#         for sprite in self.collisions:
+#             if sprite == self.sprite_list[0]:
+#                 print('Fridge')
+#             if sprite == self.sprite_list[1]:
+#                 print('Sink')
+#             if sprite == self.sprite_list[2]:
+#                 print('Counter')
+#             if sprite == self.sprite_list[3]:
+#                 print('Stove')
+#             if sprite == self.sprite_list[4]:
+#                 print('Utensils')
+#             if sprite == self.sprite_list[5]:
+#                 print('Cupboard')
+#             if sprite == self.sprite_list[6]:
+#                 print('Lamp')
+#             if sprite == self.sprite_list[7]:
+#                 print('Side Table')
+#             if sprite == self.sprite_list[8]:
+#                 print('Fireplace')
+#             if sprite == self.sprite_list[9]:
+#                 print('Record Player')
+
+#     def item_interaction(self):
+#         for sprite in self.collisions:
+#             if sprite == self.sprite_list[0]:
+#                 print('rubber duck')
+#             if sprite == self.sprite_list[1]:
+#                 print('Chew Toy')
+#             if sprite == self.sprite_list[2]:
+#                 print('Book')
+        
+
 def is_colliding(player, group):
     collisions = pygame.sprite.spritecollide(player, group, False)
     if collisions:
@@ -196,7 +245,7 @@ def is_interacting(player, group):
         return True
     return False
 
-def player_interaction(player, group):
+def furniture_interaction(player, group):
     collisions = pygame.sprite.spritecollide(player, group, False)
     sprite_list = pygame.sprite.Group.sprites(group)
     for sprite in collisions:
@@ -221,6 +270,16 @@ def player_interaction(player, group):
         if sprite == sprite_list[9]:
             print('Record Player')
 
+def item_interaction(player, group):
+    collisions = pygame.sprite.spritecollide(player, group, False)
+    sprite_list = pygame.sprite.Group.sprites(group)
+    for sprite in collisions:
+        if sprite == sprite_list[0]:
+            print('rubber duck')
+        if sprite == sprite_list[1]:
+            print('Chew Toy')
+        if sprite == sprite_list[2]:
+            print('Book')
 
 def load_map(image, surf, surf_res,):
     map_img = pygame.image.load(image)
@@ -278,7 +337,10 @@ def main():
     book = Item(spritesheet.book_info, (730, 380))
 
     visible_items = pygame.sprite.Group(rubber_duck, chew_toy, book)
-    hideen_items = pygame.sprite.Group(apple, receipt, clotheshanger)
+    hidden_items = pygame.sprite.Group(apple, receipt, clotheshanger)
+
+    # furniture_interaction = Interaction(player.sprite, furniture)
+    # item_interaction = Interaction(player.sprite, visible_items)
     
 
     # player_down_sheet = pygame.image.load('graphics/player/down.png').convert_alpha()
@@ -335,8 +397,11 @@ def main():
         player.sprite.update()
         furniture.update()
         if is_interacting(player.sprite, furniture):
-            player_interaction(player.sprite, furniture)
+            furniture_interaction(player.sprite, furniture)
         visible_items.update()
+        if is_interacting(player.sprite, visible_items):
+            item_interaction(player.sprite, visible_items)        
+        #hidden_items.update()
 
         player.sprite.check_collisions(wall)
         player.sprite.check_collisions(furniture)
@@ -350,6 +415,7 @@ def main():
         wall.draw(screen)
         furniture.draw(screen)
         visible_items.draw(screen)
+        #hidden_items.draw(screen)
         player.draw(screen)
         
         # screen.blit(walk_list[action][frame], (0,0))
