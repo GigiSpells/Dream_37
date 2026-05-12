@@ -23,17 +23,6 @@ class SpriteSheet():
 
         return image
     
-# class FurnitureSheet():
-#     def __init__(self, image):
-#         self.sheet = image
-
-#     def get_object(self, tile_size, col, row, w_in_tiles, h_in_tiles, obj_w, obj_h):
-#         full_width = w_in_tiles * tile_size
-#         full_height = h_in_tiles * tile_size
-#         image = pygame.Surface((full_width, full_height), pygame.SRCALPHA)
-#         image.blit(self.sheet, (0, 0, obj_w, obj_h), ((col*tile_size), (row*tile_size), full_width, full_height))
-
-#         return image
 
 # Piece of furniture and parameter input to retrieve them with get_object()
 fridge_info = (16, 2, 12, 2, 4, 26, 55, 3)
@@ -48,3 +37,5 @@ lamp_info = (16, 6, 7, 1, 3, 15, 46, 3)
 side_table_info = (16, 2, 0, 1, 2, 13, 27, 3)
 fireplace_info = (16, 9, 8, 2, 2, 24, 25, 3)
 record_player_info = (16, 11, 16, 2, 2, 30, 25, 3)
+
+rubber_duck_info = (16, )

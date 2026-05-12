@@ -219,13 +219,17 @@ def load_map(image, surf, surf_res,):
     surf.blit(map_img, map_rect)   
 
 
+#def render_text(font):
+    
+
 def main():
-    pygame.init
+    pygame.init()
     pygame.display.set_caption("Dream 37")
     resolution = (1920-400, 1080-100)
     screen = pygame.display.set_mode(resolution, pygame.RESIZABLE)
     clock = pygame.time.Clock()
     dt = 0
+    game_font = pygame.font.Font('assets/font/Pixeltype.ttf', 25)
     BG = (70, 50, 50)
 
     player = pygame.sprite.GroupSingle()
@@ -252,6 +256,7 @@ def main():
 
     furniture = pygame.sprite.Group(fridge, sink, counter, stove, utensils,
                                     cupboard, lamp, side_table, fireplace, record_player)
+    
 
     # player_down_sheet = pygame.image.load('graphics/player/down.png').convert_alpha()
     # player_down = spritesheet.SpriteSheet(player_down_sheet)
@@ -270,8 +275,10 @@ def main():
     #         temp_img_list.append(player_down.get_image(step_counter, 24, 24, 3, (0,0,0)))
     #         step_counter += 1
     #     walk_list.append(temp_img_list)
-    print(player.sprite)
-    print(furniture)
+
+    instructions = game_font.render(f'Press ENTER to interact.', False, (250,200,200))
+    instructions_rect = instructions.get_rect(topleft = (20,20))
+
 #Event Loop
     running = True
     while running:
@@ -314,6 +321,7 @@ def main():
         # Render the graphics here.
         # ...
         screen.fill(BG)
+        screen.blit(instructions, instructions_rect)
         load_map('graphics/environment/Dream_37_Map_MinusKeys.png', screen, resolution)
         wall.draw(screen)
         furniture.draw(screen)
