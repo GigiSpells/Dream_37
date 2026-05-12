@@ -1,4 +1,3 @@
-
 import pygame
 import spritesheet
 
@@ -155,6 +154,7 @@ class Furniture(pygame.sprite.Sprite):
         self.rect = self.image.get_bounding_rect(1)
         self.rect.topleft = self.pos
 
+
 class Item(pygame.sprite.Sprite):
     def __init__(self, object, pos):
         super().__init__()
@@ -184,52 +184,6 @@ class Wall(pygame.sprite.Sprite):
 
     def draw(self, surface):
         surface.blit(self.surf, self.pos)
-
-
-# class Interaction():
-#     def __init__(self, player, type):
-#         self.player = player
-#         self.interaction_type = type
-#         self.collisions = pygame.sprite.spritecollide(player, self.interaction_type, False)
-#         self.sprite_list = pygame.sprite.Group.sprites(type)
-    
-#     def is_interacting(self):
-#         keys = pygame.key.get_pressed()
-#         if is_colliding(self.player, self.interaction_type) and keys[pygame.K_RETURN]:
-#             return True
-#         return False
-
-#     def furniture_interaction(self):
-#         for sprite in self.collisions:
-#             if sprite == self.sprite_list[0]:
-#                 print('Fridge')
-#             if sprite == self.sprite_list[1]:
-#                 print('Sink')
-#             if sprite == self.sprite_list[2]:
-#                 print('Counter')
-#             if sprite == self.sprite_list[3]:
-#                 print('Stove')
-#             if sprite == self.sprite_list[4]:
-#                 print('Utensils')
-#             if sprite == self.sprite_list[5]:
-#                 print('Cupboard')
-#             if sprite == self.sprite_list[6]:
-#                 print('Lamp')
-#             if sprite == self.sprite_list[7]:
-#                 print('Side Table')
-#             if sprite == self.sprite_list[8]:
-#                 print('Fireplace')
-#             if sprite == self.sprite_list[9]:
-#                 print('Record Player')
-
-#     def item_interaction(self):
-#         for sprite in self.collisions:
-#             if sprite == self.sprite_list[0]:
-#                 print('rubber duck')
-#             if sprite == self.sprite_list[1]:
-#                 print('Chew Toy')
-#             if sprite == self.sprite_list[2]:
-#                 print('Book')
         
 
 def is_colliding(player, group):
@@ -239,47 +193,81 @@ def is_colliding(player, group):
         return True
     return False
 
+
 def is_interacting(player, group):
     keys = pygame.key.get_pressed()
     if is_colliding(player, group) and keys[pygame.K_RETURN]:
         return True
     return False
 
+
+def answer_yes():
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_y]:
+        return True
+    else:
+        pass
+
+
 def furniture_interaction(player, group):
+    keys = pygame.key.get_pressed()
     collisions = pygame.sprite.spritecollide(player, group, False)
     sprite_list = pygame.sprite.Group.sprites(group)
     for sprite in collisions:
         if sprite == sprite_list[0]:
-            print('Fridge')
+            print('You opened the fridge and fond an APPLE. How long has this been here?')
+            #fridge.state_index = 1
+            return True
         if sprite == sprite_list[1]:
-            print('Sink')
+            print('You looked under the sink and found a METAL CLOTHESHANGER. Fun to bend into various shapes!')
+            return True
         if sprite == sprite_list[2]:
-            print('Counter')
+            print("You looked under the counter... There's not much")
         if sprite == sprite_list[3]:
-            print('Stove')
+            print('Turn on the stove? Y / N')
         if sprite == sprite_list[4]:
             print('Utensils')
         if sprite == sprite_list[5]:
             print('Cupboard')
         if sprite == sprite_list[6]:
-            print('Lamp')
+            print('Turn on the lamp? Y / N')
         if sprite == sprite_list[7]:
-            print('Side Table')
+            print("You checked the side table draw and found a RECIEPT for... something. (It's faded)")
+            return True
         if sprite == sprite_list[8]:
-            print('Fireplace')
+            print("It's a little cold. Light a fire? Y / N")
         if sprite == sprite_list[9]:
-            print('Record Player')
+            print("Play some music?")
+            #pygame.mixer.music.play()
+
+def complete_interaction(sprite):
+    pygame.sprite.Sprite.kill(sprite)
+    return True
 
 def item_interaction(player, group):
+    keys = pygame.key.get_pressed()
     collisions = pygame.sprite.spritecollide(player, group, False)
     sprite_list = pygame.sprite.Group.sprites(group)
     for sprite in collisions:
         if sprite == sprite_list[0]:
-            print('rubber duck')
+            complete_interaction(sprite)
+            return "You found a RUBBER DUCK. It must have fallen down the stairs..."
         if sprite == sprite_list[1]:
-            print('Chew Toy')
+            complete_interaction(sprite)
+            return "There's a CHEW TOY. Who does this belong to? You don't have a dog."
         if sprite == sprite_list[2]:
-            print('Book')
+            complete_interaction(sprite)
+            return "There's a BOOK on the table. Its' usually on a shelf upstairs."
+        else:
+            pass
+
+
+def show_interaction_text(message, font, surface):
+    text = font.render(message, False, (250,200,200))
+    text_rect = text.get_rect(topleft = (500,500))
+
+    surface.blit(text, text_rect)
+
 
 def load_map(image, surf, surf_res,):
     map_img = pygame.image.load(image)
@@ -294,14 +282,15 @@ def load_map(image, surf, surf_res,):
 def main():
     pygame.init()
     pygame.display.set_caption("Dream 37")
-    resolution = (1920-400, 1080-100)
+    resolution = (1520, 980)
     screen = pygame.display.set_mode(resolution, pygame.RESIZABLE)
     clock = pygame.time.Clock()
     dt = 0
-    game_font = pygame.font.Font('assets/font/Pixeltype.ttf', 25)
+    game_font = pygame.font.Font('assets/font/Pixeltype.ttf', 50)
     BG = (70, 50, 50)
 
     found_items = 0
+    interacting = False
 
     player = pygame.sprite.GroupSingle()
     player.add(Player())
@@ -313,7 +302,6 @@ def main():
              Wall((746-200,40-50),342,245))
 
     # Furniture
-
     fridge = Furniture(spritesheet.fridge_info, (1080-200,203-50))
     sink = Furniture(spritesheet.sink_info, (1176-200,250-50))
     counter = Furniture(spritesheet.counter_info, (1272-200,250-50))
@@ -339,10 +327,6 @@ def main():
     visible_items = pygame.sprite.Group(rubber_duck, chew_toy, book)
     hidden_items = pygame.sprite.Group(apple, receipt, clotheshanger)
 
-    # furniture_interaction = Interaction(player.sprite, furniture)
-    # item_interaction = Interaction(player.sprite, visible_items)
-    
-
     # player_down_sheet = pygame.image.load('graphics/player/down.png').convert_alpha()
     # player_down = spritesheet.SpriteSheet(player_down_sheet)
 
@@ -364,8 +348,12 @@ def main():
     instructions = game_font.render(f'Press ENTER to interact.', False, (250,200,200))
     instructions_rect = instructions.get_rect(topleft = (20,20))
 
+    end_text = game_font.render(f'You found 3 items', False, (250,200,200))
+    end_text_rect = end_text.get_rect(center = (resolution[0]//2, resolution[1]//2))
+
 #Event Loop
     running = True
+    game_active = True
     while running:
 
         # Process player inputs.
@@ -393,33 +381,48 @@ def main():
 
         # Do logical updates here.
         # ...
+        if game_active:
+            player.sprite.update()
+            furniture.update()
+            if is_interacting(player.sprite, furniture):
+                furniture_interaction(player.sprite, furniture)
+            visible_items.update()
+            if is_interacting(player.sprite, visible_items):
+                if item_interaction(player.sprite, visible_items):       
+                    found_items += 1
+                    print(found_items)
+                    show_interaction_text(item_interaction(player.sprite, visible_items), game_font, screen)
+                if found_items >= 3:
+                    game_active = False
+            
+            items_found_text = game_font.render(f"Items Found: {found_items}", False, (250,200,200))
+            items_found_rect = items_found_text.get_rect(topright = (1500,20))
 
-        player.sprite.update()
-        furniture.update()
-        if is_interacting(player.sprite, furniture):
-            furniture_interaction(player.sprite, furniture)
-        visible_items.update()
-        if is_interacting(player.sprite, visible_items):
-            item_interaction(player.sprite, visible_items)        
-        #hidden_items.update()
-
-        player.sprite.check_collisions(wall)
-        player.sprite.check_collisions(furniture)
+            player.sprite.check_collisions(wall)
+            player.sprite.check_collisions(furniture)
 
 
-        # Render the graphics here.
-        # ...
-        screen.fill(BG)
-        screen.blit(instructions, instructions_rect)
-        load_map('graphics/environment/Dream_37_Map_MinusKeys.png', screen, resolution)
-        wall.draw(screen)
-        furniture.draw(screen)
-        visible_items.draw(screen)
-        #hidden_items.draw(screen)
-        player.draw(screen)
+            # Render the graphics here.
+            # ...
+            screen.fill(BG)
+            screen.blit(instructions, instructions_rect)
+            screen.blit(items_found_text, items_found_rect)
+            load_map('graphics/environment/Dream_37_Map_MinusKeys.png', screen, resolution)
+            wall.draw(screen)
+            furniture.draw(screen)
+            visible_items.draw(screen)
+            #hidden_items.draw(screen)
+            player.draw(screen)
+            
+            # screen.blit(walk_list[action][frame], (0,0))
         
-        # screen.blit(walk_list[action][frame], (0,0))
-        
+        else:
+            screen.fill(BG)
+            end_image = pygame.image.load('graphics/Dream_37_Image.jpg')
+            end_image = pygame.transform.scale_by(end_image, 0.58)
+            end_image_rect = end_image.get_rect(center = (resolution[0]//2, 790))
+            screen.blit(end_image, end_image_rect)
+            screen.blit(end_text, end_text_rect)
 
         pygame.display.flip()
         dt = clock.tick(60)

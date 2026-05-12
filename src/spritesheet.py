@@ -44,3 +44,48 @@ chew_toy_info = (16, 0, 2, 1, 1, 11, 6, 3)
 receipt_info = (16, 3, 1, 1, 1, 8, 8, 3)
 clotheshanger_info = (16, 7, 3, 1, 1, 10, 9, 3)
 book_info = (16, 1, 3, 1, 1, 8, 9, 3)
+
+# class Interaction():
+#     def __init__(self, player, type):
+#         self.player = player
+#         self.interaction_type = type
+#         self.collisions = pygame.sprite.spritecollide(player, self.interaction_type, False)
+#         self.sprite_list = pygame.sprite.Group.sprites(type)
+    
+#     def is_interacting(self):
+#         keys = pygame.key.get_pressed()
+#         if is_colliding(self.player, self.interaction_type) and keys[pygame.K_RETURN]:
+#             return True
+#         return False
+
+#     def furniture_interaction(self):
+#         for sprite in self.collisions:
+#             if sprite == self.sprite_list[0]:
+#                 print('Fridge')
+#             if sprite == self.sprite_list[1]:
+#                 print('Sink')
+#             if sprite == self.sprite_list[2]:
+#                 print('Counter')
+#             if sprite == self.sprite_list[3]:
+#                 print('Stove')
+#             if sprite == self.sprite_list[4]:
+#                 print('Utensils')
+#             if sprite == self.sprite_list[5]:
+#                 print('Cupboard')
+#             if sprite == self.sprite_list[6]:
+#                 print('Lamp')
+#             if sprite == self.sprite_list[7]:
+#                 print('Side Table')
+#             if sprite == self.sprite_list[8]:
+#                 print('Fireplace')
+#             if sprite == self.sprite_list[9]:
+#                 print('Record Player')
+
+#     def item_interaction(self):
+#         for sprite in self.collisions:
+#             if sprite == self.sprite_list[0]:
+#                 print('rubber duck')
+#             if sprite == self.sprite_list[1]:
+#                 print('Chew Toy')
+#             if sprite == self.sprite_list[2]:
+#                 print('Book')
