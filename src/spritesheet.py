@@ -38,4 +38,4 @@ side_table_info = (16, 2, 0, 1, 2, 13, 27, 3)
 fireplace_info = (16, 9, 8, 2, 2, 24, 25, 3)
 record_player_info = (16, 11, 16, 2, 2, 30, 25, 3)
 
-rubber_duck_info = (16, )
+rubber_duck_info = (16, 4, 0, 1, 1, 11, 9, 3)

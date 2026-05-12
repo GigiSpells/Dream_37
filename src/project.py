@@ -132,11 +132,6 @@ class Player(pygame.sprite.Sprite):
         surface.blit(self.image, self.rect)
 
 
-# Check if player is colliding with an instance of furniture
-# If yes, check for which. If player clicks or presses enter while colliding, initiate interaction
-    # Check for user interaction each tick
-    # Animate objects when they're found?
-
 class Furniture(pygame.sprite.Sprite):
     def __init__(self, object, pos):
         super().__init__()
@@ -157,6 +152,20 @@ class Furniture(pygame.sprite.Sprite):
         self.rect = self.image.get_bounding_rect(1)
         self.rect.topleft = self.pos
 
+class Item(pygame.sprite.Sprite):
+    def __init__(self, object, pos):
+        super().__init__()
+
+        spritesheet = pygame.image.load('assets/Top-Down_Retro_Interior/TopDownHouse_SmallItems.png').convert_alpha()
+
+        self.objects = spritesheet.SpriteSheet(spritesheet)
+        self.object_params = object
+        self.pos = pos
+
+    def update(self):
+        self.image = self.objects.get_object(*self.object_params)
+        self.rect = self.image.get_bounding_rect(1)
+        self.rect.midbottom = self.pos
 
 class Wall(pygame.sprite.Sprite):
     def __init__(self, pos, width, height):
@@ -232,6 +241,8 @@ def main():
     game_font = pygame.font.Font('assets/font/Pixeltype.ttf', 25)
     BG = (70, 50, 50)
 
+    found_items = 0
+
     player = pygame.sprite.GroupSingle()
     player.add(Player())
 
@@ -256,6 +267,11 @@ def main():
 
     furniture = pygame.sprite.Group(fridge, sink, counter, stove, utensils,
                                     cupboard, lamp, side_table, fireplace, record_player)
+    
+    # Objects 
+    rubber_duck = Item(spritesheet.rubber_duck_info, (648-200,827-50))
+
+    items = pygame.sprite.Group(rubber_duck)
     
 
     # player_down_sheet = pygame.image.load('graphics/player/down.png').convert_alpha()
@@ -313,6 +329,7 @@ def main():
         furniture.update()
         if is_interacting(player.sprite, furniture):
             player_interaction(player.sprite, furniture)
+        items.update()
 
         player.sprite.check_collisions(wall)
         player.sprite.check_collisions(furniture)
@@ -325,6 +342,7 @@ def main():
         load_map('graphics/environment/Dream_37_Map_MinusKeys.png', screen, resolution)
         wall.draw(screen)
         furniture.draw(screen)
+        items.draw(screen)
         player.draw(screen)
         
         # screen.blit(walk_list[action][frame], (0,0))
