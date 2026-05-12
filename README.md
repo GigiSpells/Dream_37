@@ -15,7 +15,7 @@ with furniture and any objects they may find. There are items the player may col
 some freely visible in the room, and others that they must find hidden in drawers or
 cabinets. The level ends when a certain number of objects are found.
 
-# Future Areas of Improvement
+### Future Areas of Improvement
 In the future I would like to complete the TODO list at the top of project.py.
 I intend for there to be text associated with each object collected, that alludes
 to a larger story/mystery. There is also a secondary state for each key furniture piece

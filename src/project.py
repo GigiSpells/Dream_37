@@ -1,8 +1,6 @@
 import pygame
 import spritesheet
 
-
-
 # TODO: 
 # Blit Interaction Text to Screen
 # Create Timer to Keep Text on Screen
@@ -13,7 +11,6 @@ import spritesheet
 # Add Start Screen
 # Add New End Screen
 
-
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
@@ -23,7 +20,7 @@ class Player(pygame.sprite.Sprite):
         self.frame = 0
         self.frame_counter = 0
 
-        self.spawn_point = (985-200, 920-50)
+        self.spawn_point = (985, 920)
         self.speed = 5
 
         player_up_sheet = pygame.image.load('graphics/player/up.png').convert_alpha()
@@ -292,7 +289,7 @@ def load_map(image, surf, surf_res,):
 def main():
     pygame.init()
     pygame.display.set_caption("Dream 37")
-    resolution = (1520, 980)
+    resolution = (1920, 1080)
     screen = pygame.display.set_mode(resolution, pygame.RESIZABLE)
     clock = pygame.time.Clock()
     dt = 0
@@ -307,32 +304,32 @@ def main():
 
     # Walls
     wall = pygame.sprite.Group()
-    wall.add(Wall((1510-200,98-50),51,536),Wall((1177-200,587-50),333,389),
-             Wall((396-200,925-50),780,54),Wall((690-200,256-50),51,428),
-             Wall((746-200,40-50),342,245))
+    wall.add(Wall((1510,98),51,536),Wall((1177,587),333,389),
+             Wall((396,925),780,54),Wall((690,256),51,428),
+             Wall((746,40),342,245))
 
     # Furniture
-    fridge = Furniture(spritesheet.fridge_info, (1080-200,203-50))
-    sink = Furniture(spritesheet.sink_info, (1176-200,250-50))
-    counter = Furniture(spritesheet.counter_info, (1272-200,250-50))
-    stove = Furniture(spritesheet.stove_info, (1415-200,251-50))
-    utensils = Furniture(spritesheet.utensils_info, (1175-200,202-50))
-    cupboard = Furniture(spritesheet.cupboard_info, (1272-200,155-50))
-    lamp = Furniture(spritesheet.lamp_info, (454-200,587-50))
-    side_table = Furniture(spritesheet.side_table_info, (408-200,827-50))
-    fireplace = Furniture(spritesheet.fireplace_info, (600-200,635-50))
-    record_player = Furniture(spritesheet.record_player_info, (648-200,827-50))
+    fridge = Furniture(spritesheet.fridge_info, (1080,203))
+    sink = Furniture(spritesheet.sink_info, (1176,250))
+    counter = Furniture(spritesheet.counter_info, (1272,250))
+    stove = Furniture(spritesheet.stove_info, (1415,251))
+    utensils = Furniture(spritesheet.utensils_info, (1175,202))
+    cupboard = Furniture(spritesheet.cupboard_info, (1272,155))
+    lamp = Furniture(spritesheet.lamp_info, (454,587))
+    side_table = Furniture(spritesheet.side_table_info, (408,827))
+    fireplace = Furniture(spritesheet.fireplace_info, (600,635))
+    record_player = Furniture(spritesheet.record_player_info, (648,827))
 
     furniture = pygame.sprite.Group(fridge, sink, counter, stove, utensils,
                                     cupboard, lamp, side_table, fireplace, record_player)
     
     # Objects 
-    rubber_duck = Item(spritesheet.rubber_duck_info, (600, 300))
-    apple = Item(spritesheet.apple_info, (600, 300))
-    chew_toy = Item(spritesheet.chew_toy_info, (900, 670))
-    receipt = Item(spritesheet.receipt_info, (600, 300))
-    clotheshanger = Item(spritesheet.clotheshanger_info, (600, 300))
-    book = Item(spritesheet.book_info, (730, 380))
+    rubber_duck = Item(spritesheet.rubber_duck_info, (600+200, 300+50))
+    apple = Item(spritesheet.apple_info, (600+200, 300+50))
+    chew_toy = Item(spritesheet.chew_toy_info, (900+200, 670+50))
+    receipt = Item(spritesheet.receipt_info, (600+200, 300+50))
+    clotheshanger = Item(spritesheet.clotheshanger_info, (600+200, 300+50))
+    book = Item(spritesheet.book_info, (730+200, 380+50))
 
     visible_items = pygame.sprite.Group(rubber_duck, chew_toy, book)
     hidden_items = pygame.sprite.Group(apple, receipt, clotheshanger)
@@ -406,7 +403,7 @@ def main():
                     game_active = False
             
             items_found_text = game_font.render(f"Items Found: {found_items}", False, (250,200,200))
-            items_found_rect = items_found_text.get_rect(topright = (1500,20))
+            items_found_rect = items_found_text.get_rect(topright = (1900,20))
 
             player.sprite.check_collisions(wall)
             player.sprite.check_collisions(furniture)
