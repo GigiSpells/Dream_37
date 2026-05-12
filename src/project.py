@@ -3,7 +3,17 @@ import spritesheet
 
 
 
-# TODO: Animate player character
+# TODO: 
+# Blit Interaction Text to Screen
+# Create Timer to Keep Text on Screen
+# Change Furniture State upon Interaction
+# Animate player character
+# Add Music
+# Add Found Items GUI
+# Add Start Screen
+# Add New End Screen
+
+
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
