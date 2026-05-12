@@ -38,6 +38,6 @@ and items (Top-Down_Retro_Interior), and The full original CharacterSheets which
 I chopped up to make sheets more suited to my needs.
 
 graphics contains the tmx file for the map as well as map and character images 
-used in the game, and an picture of an old painting of the dream that inspired the game,
-currently used as a placeholder for the end screen. 
+used in the game, and a picture of an old painting of the dream that inspired the project,
+currently used as a placeholder for the end screen.
 
