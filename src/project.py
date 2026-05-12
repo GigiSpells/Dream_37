@@ -156,9 +156,9 @@ class Item(pygame.sprite.Sprite):
     def __init__(self, object, pos):
         super().__init__()
 
-        spritesheet = pygame.image.load('assets/Top-Down_Retro_Interior/TopDownHouse_SmallItems.png').convert_alpha()
+        sprite_sheet = pygame.image.load('assets/Top-Down_Retro_Interior/TopDownHouse_SmallItems.png').convert_alpha()
 
-        self.objects = spritesheet.SpriteSheet(spritesheet)
+        self.objects = spritesheet.SpriteSheet(sprite_sheet)
         self.object_params = object
         self.pos = pos
 
@@ -166,6 +166,7 @@ class Item(pygame.sprite.Sprite):
         self.image = self.objects.get_object(*self.object_params)
         self.rect = self.image.get_bounding_rect(1)
         self.rect.midbottom = self.pos
+
 
 class Wall(pygame.sprite.Sprite):
     def __init__(self, pos, width, height):
@@ -223,7 +224,7 @@ def player_interaction(player, group):
 
 def load_map(image, surf, surf_res,):
     map_img = pygame.image.load(image)
-    map_img.set_alpha(70)
+    #map_img.set_alpha(70)
     map_rect = map_img.get_rect(center = (surf_res[0]//2, surf_res[1]//2))
     surf.blit(map_img, map_rect)   
 
@@ -269,9 +270,15 @@ def main():
                                     cupboard, lamp, side_table, fireplace, record_player)
     
     # Objects 
-    rubber_duck = Item(spritesheet.rubber_duck_info, (648-200,827-50))
+    rubber_duck = Item(spritesheet.rubber_duck_info, (600, 300))
+    apple = Item(spritesheet.apple_info, (600, 300))
+    chew_toy = Item(spritesheet.chew_toy_info, (900, 670))
+    receipt = Item(spritesheet.receipt_info, (600, 300))
+    clotheshanger = Item(spritesheet.clotheshanger_info, (600, 300))
+    book = Item(spritesheet.book_info, (730, 380))
 
-    items = pygame.sprite.Group(rubber_duck)
+    visible_items = pygame.sprite.Group(rubber_duck, chew_toy, book)
+    hideen_items = pygame.sprite.Group(apple, receipt, clotheshanger)
     
 
     # player_down_sheet = pygame.image.load('graphics/player/down.png').convert_alpha()
@@ -329,7 +336,7 @@ def main():
         furniture.update()
         if is_interacting(player.sprite, furniture):
             player_interaction(player.sprite, furniture)
-        items.update()
+        visible_items.update()
 
         player.sprite.check_collisions(wall)
         player.sprite.check_collisions(furniture)
@@ -342,7 +349,7 @@ def main():
         load_map('graphics/environment/Dream_37_Map_MinusKeys.png', screen, resolution)
         wall.draw(screen)
         furniture.draw(screen)
-        items.draw(screen)
+        visible_items.draw(screen)
         player.draw(screen)
         
         # screen.blit(walk_list[action][frame], (0,0))

@@ -39,3 +39,8 @@ fireplace_info = (16, 9, 8, 2, 2, 24, 25, 3)
 record_player_info = (16, 11, 16, 2, 2, 30, 25, 3)
 
 rubber_duck_info = (16, 4, 0, 1, 1, 11, 9, 3)
+apple_info = (16, 4, 7, 1, 1, 11, 9, 3)
+chew_toy_info = (16, 0, 2, 1, 1, 11, 6, 3)
+receipt_info = (16, 3, 1, 1, 1, 8, 8, 3)
+clotheshanger_info = (16, 7, 3, 1, 1, 10, 9, 3)
+book_info = (16, 1, 3, 1, 1, 8, 9, 3)
